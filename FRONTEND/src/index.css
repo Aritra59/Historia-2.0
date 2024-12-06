@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Playfair Display", serif;
+}
+
+/* Style for the underline that is hidden by default */
+a.active hr {
+  width: 100%; /* Set the width to full when active */
+  transition: width 0.3s ease-in-out;
+}
+
+a hr {
+  width: 0; /* Hide the underline by default */
+  height: 3.5px; /* Set the underline height */
+  background-color: #34d399; /* Emerald color for the underline */
+  transition: width 0.3s ease-in-out;
+}
+
+a:hover hr {
+  width: 100%; /* Expand the underline on hover */
+}
+
+/* Optional: To show the underline only when active */
+a.active hr {
+  width: 100%;
+  display: block;
+}
+
+.custom-placeholder::placeholder {
+  color: #f8f8f8c4;
+  opacity: 1;
+}
