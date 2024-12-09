@@ -6,6 +6,7 @@ import Blog from '../components/blog/Blog';
 import RecentBlog from '../components/RecentBlog/RecentBlog';
 import VideoSection from '../components/VideoSection/VideoSection';
 import AboutSection from '../components/AboutSection';
+import CuriousMindAsk from '../components/CuriousMindAsk';
 // import AboutImage from '../components/AboutImage';
 
 
@@ -24,8 +25,9 @@ const Home = () => {
       <Category/>
       <VideoSection/>
       <RecentBlog/>
- 
+
       <Blog/>
+      <CuriousMindAsk/>
       <AboutSection/>
       
     
