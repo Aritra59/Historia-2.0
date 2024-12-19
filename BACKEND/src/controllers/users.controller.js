@@ -94,10 +94,35 @@ const login= asyncHandler(async(req,res)=>{
     .cookie("accessToken",accessToken,Options)
     .cookie("refreshToken",refreshToken,Options)
     .json(new apiResponse(200,currentUserData,"login success!!"))
+    
+})
+
+const logout = asyncHandler(async(req,res)=>{
+    const currentUser = req.User
+    console.log(currentUser)
+    if(!currentUser && !isValidObjectId(currentUser)){
+        throw new apiError("you are not logged in anymore or invalid")
+    }
+    const isUserValid = await user.findById(currentUser)
+    if(!isUserValid) throw new apiError(400,"user not found ")
+        
+        isUserValid.refreshToken= null
+        await isUserValid.save({validateBeforeSave:false})
+        
+        const Options = {
+            httpOnly:true,
+            secure:true
+        }
+    return res.clearCookie("accessToken",Options)
+              .clearCookie("refreshToken",Options).json(
+                  
+                  new apiResponse(200,`logout Successful for ${isUserValid.username}`)
+            )
 
 })
 
 export {signUp
-    ,login
+    ,login,
+    logout
 }
 
