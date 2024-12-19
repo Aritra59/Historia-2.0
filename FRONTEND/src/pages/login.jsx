@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import{ useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import img1 from "../components/blog/img/xd.jpg";
 import img2 from "../assets/vic.jpg";
@@ -48,25 +48,26 @@ function Login() {
     );
   }, []);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleLogin = async function (e) {
-    e.preventDefault();
+  const handleLogin = async function(e){
+    e.preventDefault()
+
 
     try {
-      const response = await axios.post("/users/login", {
-        password: password,
-        email: email,
-      });
-      console.log(response.data);
-      setSuccess(true);
-    } catch (error) {
-      setError("some error occurred");
-      console.error(error);
-    }
+        const response = await axios.post('/users/login',{
+        password:password,
+        email: email
+        });
+        console.log(response.data);
+        setSuccess(true)
+    }catch (error) {
+        setError("some error occured")
+        console.error(error);
+      }
 
-    navigate("/signUp");
-  };
+
+}
 
   return (
     <div
@@ -88,7 +89,7 @@ function Login() {
         Welcome to Our Historical Archive
       </h1>
       <p className="italic text-sm sm:text-base md:text-lg text-gray-300 text-center mb-8">
-        "Preserving the echoes of time."
+        {"Preserving the echoes of time."}
       </p>
       <form onSubmit={handleLogin} className="w-full max-w-xs sm:max-w-sm">
         <div className="mb-6">
@@ -153,7 +154,7 @@ function Login() {
         shaped humanity. Step into the past to create a better future.
       </p>
       <blockquote className="text-sm sm:text-base md:text-lg text-gray-300 text-center italic px-4">
-        "Those who cannot remember the past are condemned to repeat it."
+       { "Those who cannot remember the past are condemned to repeat it."}
       </blockquote>
     </div>
   </div>

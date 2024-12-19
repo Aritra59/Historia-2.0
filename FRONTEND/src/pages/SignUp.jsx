@@ -54,7 +54,7 @@ function SignUp() {
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("profilePic", profilePic);
+      formData.append("avatar", profilePic);
 
       const response = await axios.post("/users/signUp", formData);
       console.log(response.data);
@@ -86,7 +86,7 @@ function SignUp() {
           Join us to preserve and celebrate the rich tapestry of human history.
         </p>
         <blockquote className="text-sm sm:text-base md:text-lg text-gray-300 text-center italic px-4">
-          "History lives in those who remember."
+         { "History lives in those who remember."}
         </blockquote>
       </div>
 
@@ -105,7 +105,7 @@ function SignUp() {
           Sign Up for Historical Insights
         </h1>
         <p className="italic text-sm sm:text-base md:text-lg text-gray-300 text-center mb-8">
-          "Connecting the past to the present for the future."
+          {"Connecting the past to the present for the future."}
         </p>
         <form
           onSubmit={handleSignUp}
