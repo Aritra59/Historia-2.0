@@ -11,6 +11,7 @@ import { post } from "../models/post.models.js";
 const createPost =asyncHandler(async(req,res)=>{
 const {title,content} = req.body
 const currentUser = req.User
+
 if(!(title || content)){
     throw new apiError(400,"cannot find title or content in creatingPost controller")
 }
@@ -40,20 +41,70 @@ const newPost = await post.create({
   postImg:allImgPaths,
 })
 
-const isPostValid = post.aggregate([
+const isPostValid = await post.aggregate([
   {
-    $match: newPost._id
-  }
+    $match:{ _id:newPost._id}
+  },
+  {
+    $lookup:{
+      from:"users",
+      localField:"owner",
+      foreignField:"_id",
+      as:"ownerDataForPosts",
+      pipeline:[
+        {
+          $project:{
+            username:1,
+            avatar:1
+          } 
+      }
+      ]
+    }
+  },
 ])
-return res.status(200).json( new apiResponse(200,newPost))
+
+if(!Array.isArray(isPostValid) && isPostValid.length<0){
+
+ throw new apiError(400,"user creation failure or userFailiure")
+}
+
+return res.status(200).json( new apiResponse(200,{...isPostValid},"post created successfully!"))
+
+})
+
+
+const updatePost  =asyncHandler(async(req,res)=>{
+
+const {postId} = req.params
+const {content,title}= req.body
+// console.log(postId)
+if( !req.user &&! isValidObjectId(req.User) ) throw new apiError(400,"please login first " )
+if(!(content && title)) throw new apiError(400,"content and title not recieved while updating post ")
+if(!postId && !isValidObjectId(postId)) throw new apiError(400, 'Invalid post Id to edit for the user ')
+
+const updatedImg = await req.files
+if(!updatedImg) throw new apiError(400,"uploading failed during post editing")
+
+const postImg = 
+await Promise.all(
+  updatedImg.map(async (data)=>{
+    let uploadedData = await cloudUploader(data?.path)
+    return uploadedData.url
+  })
+)
+const updatedState = await post.findByIdAndUpdate(postId,{
+  $set:{
+    content:content,
+    title:title,
+    postImg:postImg
+  }
+})
+return res.status(200).json(new apiResponse(200,updatedState,"post update success"))
 
 })
 
 
 const deletePost  =asyncHandler(async(req,res)=>{
-
-})
-const updatePost  =asyncHandler(async(req,res)=>{
 
 })
 const updatePostImage =asyncHandler(async(req,res)=>{
@@ -72,4 +123,6 @@ const getRecentPosts=asyncHandler(async(req,res)=>{
 
 })
 
-export {createPost}
+export {createPost,
+  updatePost
+}
