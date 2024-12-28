@@ -15,7 +15,7 @@ const postSchema  = new mongoose.Schema({
         ref:"user"
     },
     postImg:{
-        type:String,
+        type:[String],
         default:"https://cdn1.iconfinder.com/data/icons/ui-icon-part-3/128/image-512.png"
     },
     likes:{

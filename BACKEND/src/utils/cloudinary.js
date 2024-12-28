@@ -16,7 +16,7 @@ const cloudUploader = async function (filepath) {
                 resource_type: "auto"
             })
 console.log("The content is uploaded at"+uploadResult.url)
-    fs.unlinkSync(filepath)
+            
 return uploadResult
     } catch (error) {
          fs.unlinkSync(filepath)
