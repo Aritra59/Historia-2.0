@@ -1,145 +1,225 @@
-import mongoose  from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {apiError} from "../utils/apiError.js"
-import {apiResponse } from "../utils/apiResponse.js"
-import { cloudUploader,cloudDataDeleter } from "../utils/cloudinary.js";
+import { apiError } from "../utils/apiError.js"
+import { apiResponse } from "../utils/apiResponse.js"
+import { cloudUploader, cloudDataDeleter } from "../utils/cloudinary.js";
 import { user } from "../models/user.models.js";
 import { isValidObjectId } from "mongoose";
 import { post } from "../models/post.models.js";
 
 
-const createPost =asyncHandler(async(req,res)=>{
-const {title,content} = req.body
-const currentUser = req.User
+const createPost = asyncHandler(async (req, res) => {
+  const { title, content } = req.body
+  const currentUser = req.User
 
-if(!(title || content)){
-    throw new apiError(400,"cannot find title or content in creatingPost controller")
-}
-const postImgs = await req.files
-// console.log(req.files)
-console.log(postImgs)
-if(!postImgs){
-    throw new apiError(401,"some error occured while getting postImages for posting ")
-}
+  if (!(title || content)) {
+    throw new apiError(400, "cannot find title or content in creatingPost controller")
+  }
+  const postImgs = await req.files
+  // console.log(req.files)
+  console.log(postImgs)
+  if (!postImgs) {
+    throw new apiError(401, "some error occured while getting postImages for posting ")
+  }
 
-const allImgPaths = await Promise.all(
+  const allImgPaths = await Promise.all(
     postImgs.map(async (data) => {
       console.log(`Uploading: ${data.path}`);
       const uploadResult = await cloudUploader(data.path);
-      return uploadResult.url; 
+      return uploadResult.url;
     })
   );
 
-if(!allImgPaths.length>0){
-throw new apiError(400,"cloudinary data during upload not present")
-}
+  if (!allImgPaths.length > 0) {
+    throw new apiError(400, "cloudinary data during upload not present")
+  }
 
-const newPost = await post.create({
-  title,
-  content,
-  owner:currentUser,
-  postImg:allImgPaths,
+  const newPost = await post.create({
+    title,
+    content,
+    owner: currentUser,
+    postImg: allImgPaths,
+  })
+
+  const isPostValid = await post.aggregate([
+    {
+      $match: { _id: newPost._id }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "owner",
+        foreignField: "_id",
+        as: "ownerDataForPosts",
+        pipeline: [
+          {
+            $project: {
+              username: 1,
+              avatar: 1
+            }
+          }
+        ]
+      }
+    },
+  ])
+
+  if (!Array.isArray(isPostValid) && isPostValid.length < 0) {
+
+    throw new apiError(400, "user creation failure or userFailiure")
+  }
+
+  return res.status(200).json(new apiResponse(200, isPostValid[0], "post created successfully!"))
+
 })
 
-const isPostValid = await post.aggregate([
-  {
-    $match:{ _id:newPost._id}
-  },
-  {
-    $lookup:{
-      from:"users",
-      localField:"owner",
-      foreignField:"_id",
-      as:"ownerDataForPosts",
-      pipeline:[
-        {
-          $project:{
-            username:1,
-            avatar:1
-          } 
-      }
-      ]
+const updatePost = asyncHandler(async (req, res) => {
+
+  const { postId } = req.params
+  const { content, title } = req.body
+
+  if (!req.User && !isValidObjectId(req.User)) throw new apiError(400, "please login first ")
+  if (!(content && title)) throw new apiError(400, "content and title not recieved while updating post ")
+  if (!postId && !isValidObjectId(postId)) throw new apiError(400, 'Invalid post Id to edit for the user ')
+
+  const updatedImg = await req.files
+  if (!updatedImg) throw new apiError(400, "uploading failed during post editing")
+
+  const postImg = await Promise.all(
+    updatedImg.map(async (data) => {
+      let uploadedData = await cloudUploader(data?.path)
+      return uploadedData.url
+    })
+  )
+  if (!postImg) throw new apiError(400, "image not uploaded while updating")
+  const updatedState = await post.findByIdAndUpdate(postId, {
+    $set: {
+      content: content,
+      title: title,
+      postImg: postImg
     }
+  })
+  return res.status(200).json(new apiResponse(200, updatedState, "post update success"))
+
+})
+
+const deletePost = asyncHandler(async (req, res) => {
+
+  const { postId } = req.params
+
+  if (!req?.User) {
+    throw new apiError(400, "not logged in i guess")
+  }
+
+  if (!postId && !isValidObjectId(postId)) {
+    throw new apiError(400, "no params passed for deleting post")
+  }
+
+  const targetPost = await post.findById(postId)
+  if (!targetPost) throw new apiError(400, "target post not exists or invalid request to delete")
+
+
+  // delete associated images with the posts
+  const imgDeletionStatus = await Promise.all(targetPost?.postImg.map(async (data) => {
+
+    try {
+      let parsedData = data.split("/")[data.split("/").length - 1].split(".")[0]
+      const deletedImageStatus = await cloudDataDeleter(parsedData)
+      console.log(deletedImageStatus)
+      return deletedImageStatus
+    } catch (error) {
+      throw new apiError(400, error.message)
+    }
+  }))
+
+  if (!imgDeletionStatus) {
+    throw new apiError(400, "delete unsuccessful!")
+  }
+
+  const deletedStatus = await post.findByIdAndDelete(targetPost?._id)
+  if (!deletedStatus) {
+    throw new apiError(400, "delete unsuccessful!")
+  }
+  return res.status(200).json(new apiResponse(200, imgDeletionStatus, "img deletion success"))
+
+})
+
+const updatePostImage = asyncHandler(async (req, res) => {
+  const { postId } = req.params
+
+  if (!req?.User) {
+    throw new apiError(400, "not logged in i guess")
+  }
+
+  if (!postId && !isValidObjectId(postId)) {
+    throw new apiError(400, "no params passed for deleting post")
+  }
+
+  const targetPost = await post.findById(postId)
+  if (!targetPost) throw new apiError(400, "target post not exists or invalid request to delete")
+
+  const newImage = req?.files
+  if (!newImage) throw new apiError(400, "new images not recieved for updating")
+
+  const imageUploadStatus = await Promise.all(
+    newImage.map(async (data) => {
+      const uploaderStatus = await cloudUploader(data.path)
+      return uploaderStatus?.url
+    })
+  )
+  if (!imageUploadStatus) throw new apiError(400, "image upload failure")
+
+  const oldData = targetPost?.postImg
+
+  targetPost.postImg = imageUploadStatus
+  await targetPost.save({ validateBeforeSave: false })
+
+  const newUpdate = await post.findById(targetPost._id)
+  if (!newUpdate) {
+    throw new apiError(200, "post not found")
+  }
+
+  return res.status(200).json(new apiResponse(200,
+    { oldData: oldData, newData: newUpdate.postImg },
+    "post Image update Done!"))
+})
+
+const getAllUserPostData = asyncHandler(async (req, res) => {
+const currentUser = req.User
+const {pageNo}= req.params
+const initialStart= 10
+let calculatedPage= initialStart* Number(pageNo)
+
+if(!currentUser ){
+  throw new apiError(400,"please login to see content")
+}
+
+
+const allData= await post.aggregate([
+  {
+    $match:{}
   },
+  {
+    $limit:calculatedPage
+  }
+
 ])
 
-if(!Array.isArray(isPostValid) && isPostValid.length<0){
+return res.status(200).json(new apiResponse(200,allData,"fetched all post Data!"))
 
- throw new apiError(400,"user creation failure or userFailiure")
-}
+})
+const getPostWithLocationName = asyncHandler(async (req, res) => {
 
-return res.status(200).json( new apiResponse(200,{...isPostValid},"post created successfully!"))
+})
+const getPostWithLimitedData = asyncHandler(async (req, res) => {
+
+})
+const getRecentPosts = asyncHandler(async (req, res) => {
 
 })
 
-
-const updatePost  =asyncHandler(async(req,res)=>{
-
-const {postId} = req.params
-const {content,title}= req.body
-// console.log(postId)
-if( !req.User &&! isValidObjectId(req.User) ) throw new apiError(400,"please login first " )
-if(!(content && title)) throw new apiError(400,"content and title not recieved while updating post ")
-if(!postId && !isValidObjectId(postId)) throw new apiError(400, 'Invalid post Id to edit for the user ')
-
-const updatedImg = await req.files
-if(!updatedImg) throw new apiError(400,"uploading failed during post editing")
-
-const postImg = 
-await Promise.all(
-  updatedImg.map(async (data)=>{
-    let uploadedData = await cloudUploader(data?.path)
-    return uploadedData.url
-  })
-)
-const updatedState = await post.findByIdAndUpdate(postId,{
-  $set:{
-    content:content,
-    title:title,
-    postImg:postImg
-  }
-})
-return res.status(200).json(new apiResponse(200,updatedState,"post update success"))
-
-})
-
-
-const deletePost  =asyncHandler(async(req,res)=>{
-const {postId} = req.params
-
-if(!req?.User){
-  throw new apiError(400,"not logged in i guess")
-}
-if(!postId) throw new apiError(400,"no params passed for deleting post")
-const imgDeleteStatus = await cloudDataDeleter(postId)
-console.log(imgDeleteStatus)
-if(!imgDeleteStatus){ 
-  throw new apiError(400,"delete unsuccessful!")
-}
-return res.status(200).json(new apiResponse(200,imgDeleteStatus,"img del success"))
-
-})
-
-
-
-
-const updatePostImage =asyncHandler(async(req,res)=>{
-
-})
-const getAllUserPostData =asyncHandler(async(req,res)=>{
-
-})
-const getPostWithLocationName =asyncHandler(async(req,res)=>{
-    
-})
-const getPostWithLimitedData=asyncHandler(async(req,res)=>{
-
-})
-const getRecentPosts=asyncHandler(async(req,res)=>{
-
-})
-
-export {createPost,
+export {
+  createPost,
   updatePost,
-  deletePost
+  deletePost,
+  updatePostImage,
+  getAllUserPostData
 }

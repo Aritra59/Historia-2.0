@@ -28,6 +28,7 @@ return uploadResult
 const cloudDataDeleter= async function (path){
     try {
         const dataDeleteStatus  = await cloudinary.uploader.destroy(path)
+        // console.log(dataDeleteStatus)
         if(!dataDeleteStatus) throw new Error("deletion failed!")
         return dataDeleteStatus
     } catch (error) {
