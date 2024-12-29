@@ -2,7 +2,7 @@ import mongoose  from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {apiError} from "../utils/apiError.js"
 import {apiResponse } from "../utils/apiResponse.js"
-import { cloudUploader } from "../utils/cloudinary.js";
+import { cloudUploader,cloudDataDeleter } from "../utils/cloudinary.js";
 import { user } from "../models/user.models.js";
 import { isValidObjectId } from "mongoose";
 import { post } from "../models/post.models.js";
@@ -78,7 +78,7 @@ const updatePost  =asyncHandler(async(req,res)=>{
 const {postId} = req.params
 const {content,title}= req.body
 // console.log(postId)
-if( !req.user &&! isValidObjectId(req.User) ) throw new apiError(400,"please login first " )
+if( !req.User &&! isValidObjectId(req.User) ) throw new apiError(400,"please login first " )
 if(!(content && title)) throw new apiError(400,"content and title not recieved while updating post ")
 if(!postId && !isValidObjectId(postId)) throw new apiError(400, 'Invalid post Id to edit for the user ')
 
@@ -105,8 +105,24 @@ return res.status(200).json(new apiResponse(200,updatedState,"post update succes
 
 
 const deletePost  =asyncHandler(async(req,res)=>{
+const {postId} = req.params
+
+if(!req?.User){
+  throw new apiError(400,"not logged in i guess")
+}
+if(!postId) throw new apiError(400,"no params passed for deleting post")
+const imgDeleteStatus = await cloudDataDeleter(postId)
+console.log(imgDeleteStatus)
+if(!imgDeleteStatus){ 
+  throw new apiError(400,"delete unsuccessful!")
+}
+return res.status(200).json(new apiResponse(200,imgDeleteStatus,"img del success"))
 
 })
+
+
+
+
 const updatePostImage =asyncHandler(async(req,res)=>{
 
 })
@@ -124,5 +140,6 @@ const getRecentPosts=asyncHandler(async(req,res)=>{
 })
 
 export {createPost,
-  updatePost
+  updatePost,
+  deletePost
 }
