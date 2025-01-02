@@ -1,6 +1,8 @@
 import { Router  } from "express";
-import { createPost, deletePost, getAllUserPostData, 
-    updatePost, updatePostImage } from "../controllers/post.controller.js";
+import { createPost, deletePost, getAllPostData, 
+    updatePost, updatePostImage,getPostWithLocationName,
+    getUserPosts
+ } from "../controllers/post.controller.js";
 import { upload } from "../middlewares/multer.js";
 import { verifyJWT} from "../middlewares/auth.middleware.js"
 
@@ -11,6 +13,8 @@ postRouter.route("/addPost").post(upload.array("postImg",2),createPost)
 postRouter.route("/updatePost/:postId").post(upload.array("postImg",2),updatePost)
 postRouter.route("/deletePost/:postId").get(deletePost)
 postRouter.route("/updatePostImage/:postId").post(upload.array("postImg",2),updatePostImage)
-postRouter.route("/getAllPostData/:pageNo").get(getAllUserPostData)
+postRouter.route("/allPosts/").get(getAllPostData)
+postRouter.route("/locationBasedPosts/").get(getPostWithLocationName)
+postRouter.route("/getUserPosts/").get(getUserPosts)
 
 export {postRouter}

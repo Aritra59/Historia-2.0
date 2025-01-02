@@ -8,10 +8,10 @@ import { post } from "../models/post.models.js";
 
 
 const createPost = asyncHandler(async (req, res) => {
-  const { title, content } = req.body
+  const { title, content, postLocation } = req.body
   const currentUser = req.User
 
-  if (!(title || content)) {
+  if (!(title || content ||postLocation)) {
     throw new apiError(400, "cannot find title or content in creatingPost controller")
   }
   const postImgs = await req.files
@@ -38,6 +38,7 @@ const createPost = asyncHandler(async (req, res) => {
     content,
     owner: currentUser,
     postImg: allImgPaths,
+    postLocation
   })
 
   const isPostValid = await post.aggregate([
@@ -182,32 +183,89 @@ const updatePostImage = asyncHandler(async (req, res) => {
     "post Image update Done!"))
 })
 
-const getAllUserPostData = asyncHandler(async (req, res) => {
+const getAllPostData = asyncHandler(async (req, res) => {
 const currentUser = req.User
-const {pageNo}= req.params
+const {pageNo}= req.query
 const initialStart= 10
-let calculatedPage= initialStart* Number(pageNo)
 
 if(!currentUser ){
   throw new apiError(400,"please login to see content")
 }
 
-
-const allData= await post.aggregate([
+const allData = await post.aggregate([
   {
-    $match:{}
+    $match: {}  
   },
   {
-    $limit:calculatedPage
+    $sort: {
+      createdBy: 1  
+    }
+  },
+  {
+    $skip:(pageNo - 1) * initialStart
+  },
+  {
+    $limit: initialStart 
   }
-
 ])
+
 
 return res.status(200).json(new apiResponse(200,allData,"fetched all post Data!"))
 
 })
-const getPostWithLocationName = asyncHandler(async (req, res) => {
 
+const getPostWithLocationName = asyncHandler(async (req, res) => {
+const {location} = req.query
+if(!req.User){
+  throw new apiError(401,"user not logged in")
+}
+if(!location){
+  throw new apiError(400,"location not provided")
+}
+const locationBasedData = await post.aggregate([
+   {
+    $match:{
+      postLocation:location
+    }
+   }
+])
+
+return res.status(200).json(
+  new apiResponse(200,locationBasedData,"found")
+)
+
+})
+
+const getUserPosts = asyncHandler(async(req,res)=>{ //paginated
+const currentUser = req.User
+const {pageNo}= req.query
+const initialStart= 10
+
+const userPosts =await user.aggregate([
+  {
+    $match:{
+      _id:req?.User
+    }
+  },
+    {
+      $lookup:{
+      from:"posts",
+      localField:"_id",
+      foreignField:"owner",
+      as:"postsData"
+    }
+  },
+  {
+    $project:{
+      username:1,
+      userLocation:1,
+      postsData:1
+    }
+  }
+])
+return res.status(200).json(
+  new apiResponse(200,userPosts[0],"found")
+)
 })
 const getPostWithLimitedData = asyncHandler(async (req, res) => {
 
@@ -216,10 +274,13 @@ const getRecentPosts = asyncHandler(async (req, res) => {
 
 })
 
+
 export {
   createPost,
   updatePost,
   deletePost,
   updatePostImage,
-  getAllUserPostData
+  getAllPostData,
+  getPostWithLocationName,
+  getUserPosts
 }

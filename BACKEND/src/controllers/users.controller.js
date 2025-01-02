@@ -6,7 +6,7 @@ import { user } from "../models/user.models.js";
 import { isValidObjectId } from "mongoose";
 
 const signUp= asyncHandler(async(req,res)=>{
-    const {username,password,email}= req.body
+    const {username,password,email,userLocation}= req.body
     
     if([username, password, email].some((data)=> data.trim==="")){
         throw new apiError(400,"creds not collected properly on signup")
@@ -37,7 +37,8 @@ const signUp= asyncHandler(async(req,res)=>{
         username,
         password,
         email,
-        avatar:avatarURL?.url || "noImg"
+        avatar:avatarURL?.url || "noImg",
+        userLocation
     })
     if(!userEntry){
         throw new apiError(400,"user entry failed")
