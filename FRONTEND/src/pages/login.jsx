@@ -1,10 +1,12 @@
 import{ useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import img1 from "../components/blog/img/xd.jpg";
 import img2 from "../assets/vic.jpg";
+import { useDispatch } from "react-redux";
+import { login } from "../features/userAuth";
 
 function Login() {
   let [password, setPassword] = useState("");
@@ -13,7 +15,7 @@ function Login() {
   let [success, setSuccess] = useState(false);
   const containerRef = useRef(null);
   const lineRef = useRef(null); // Ref for the middle line
-
+  const dispatcher = useDispatch()
   useEffect(() => {
     // GSAP animations
     const tl = gsap.timeline({ defaults: { duration: 1, ease: "power2.out" } });
@@ -48,7 +50,7 @@ function Login() {
     );
   }, []);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async function(e){
     e.preventDefault()
@@ -60,13 +62,14 @@ function Login() {
         email: email
         });
         console.log(response.data);
+        dispatcher(login(response.data))
         setSuccess(true)
     }catch (error) {
         setError("some error occured")
         console.error(error);
       }
 
-
+      navigate("/profile")
 }
 
   return (

@@ -122,8 +122,26 @@ const logout = asyncHandler(async(req,res)=>{
 
 })
 
+const getUserProfileData= asyncHandler(async(req,res)=>{
+    const currentUser= req.User
+
+    if(!currentUser && !isValidObjectId(currentUser)) {
+        throw new apiError(400,"user Invalid or not logged In")
+    }
+
+        const userData = await user.findById(currentUser).select("-password")
+
+    if(!currentUser ) {
+        throw new apiError(400,"user does not exist or invalid user")
+    }
+    return res.status(200).json(new apiResponse(200,userData,"user found successfully"))
+
+})
+
+
 export {signUp
     ,login,
-    logout
+    logout,
+    getUserProfileData
 }
 

@@ -8,7 +8,8 @@ import {Stories,Event,
   SignUp,
   Login,Home,
   Profile} from "./pages/index.js"
-
+  import { Provider } from 'react-redux'
+  import globalStore from "./store/globalStore.js"
 
 const route= createBrowserRouter(
 
@@ -28,5 +29,7 @@ const route= createBrowserRouter(
 )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={globalStore}>
   <RouterProvider router = {route}/>
+  </Provider>
 )
