@@ -236,10 +236,14 @@ return res.status(200).json(
 
 })
 
-const getUserPosts = asyncHandler(async(req,res)=>{ //paginated
+const getUserPosts = asyncHandler(async(req,res)=>{ //will paginate later
 const currentUser = req.User
 const {pageNo}= req.query
 const initialStart= 10
+
+if(!currentUser && !isValidObjectId){
+throw new apiError(400,"please login First")
+}
 
 const userPosts =await user.aggregate([
   {
@@ -263,15 +267,40 @@ const userPosts =await user.aggregate([
     }
   }
 ])
-return res.status(200).json(
-  new apiResponse(200,userPosts[0],"found")
+return res.status(200).json(new apiResponse(200,userPosts[0],"found")
 )
 })
-const getPostWithLimitedData = asyncHandler(async (req, res) => {
 
+const getPostWithLimitedData = asyncHandler(async (req, res) => { //how many u want
+const {count,recent,previous} = req.query
+
+const wantedData = await post.aggregate([
+  {
+   $limit: parseInt(count)
+  },
+  {
+    $sort:{
+      createdAt:1
+  }
+}
+])
+return res.status(400).json(new apiResponse(400,wantedData[0],`u got ${count} posts`))
 })
-const getRecentPosts = asyncHandler(async (req, res) => {
 
+const getRecentPosts = asyncHandler(async (req, res) => {
+  const {count} = req.query
+  
+  const wantedData = await post.aggregate([
+    {
+      $sort:{
+        createdAt:0
+      }
+    },
+    {
+      $limit: parseInt(count)
+    },
+  ])
+  return res.status(400).json(new apiResponse(400,wantedData[0],`u got ${count} posts`))
 })
 
 
@@ -282,5 +311,7 @@ export {
   updatePostImage,
   getAllPostData,
   getPostWithLocationName,
-  getUserPosts
+  getUserPosts,
+  getPostWithLimitedData,
+  getRecentPosts
 }

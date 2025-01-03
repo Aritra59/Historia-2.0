@@ -16,5 +16,6 @@ postRouter.route("/updatePostImage/:postId").post(upload.array("postImg",2),upda
 postRouter.route("/allPosts/").get(getAllPostData)
 postRouter.route("/locationBasedPosts/").get(getPostWithLocationName)
 postRouter.route("/getUserPosts/").get(getUserPosts)
+postRouter.route("/getPosts/").get(getUserPosts)
 
 export {postRouter}
