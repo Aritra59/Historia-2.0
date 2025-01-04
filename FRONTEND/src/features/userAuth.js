@@ -30,10 +30,11 @@ const authSlice = createSlice({
         state.authState.isUserLoggedIn=true,
            state.authState.userData=action.payload
            state.authState.userStatus="logged In"
-        }
+        },
+       
     }
 })
 
 export default authSlice.reducer
 
-export const {login,logout}= authSlice.actions
+export const {login,logout,signUp}= authSlice.actions

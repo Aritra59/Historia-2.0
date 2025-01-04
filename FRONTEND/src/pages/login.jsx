@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import img1 from "../components/blog/img/xd.jpg";
 import img2 from "../assets/vic.jpg";
-import { useDispatch } from "react-redux";
-import { login } from "../features/userAuth";
+import { useDispatch,} from "react-redux";
+import { login} from "../features/userAuth";
 
 function Login() {
   let [password, setPassword] = useState("");
@@ -52,9 +52,9 @@ function Login() {
 
   const navigate = useNavigate();
 
+
   const handleLogin = async function(e){
     e.preventDefault()
-
 
     try {
         const response = await axios.post('/users/login',{
@@ -62,7 +62,8 @@ function Login() {
         email: email
         });
         console.log(response.data);
-        dispatcher(login(response.data))
+          dispatcher(login(response.data))
+        
         setSuccess(true)
     }catch (error) {
         setError("some error occured")

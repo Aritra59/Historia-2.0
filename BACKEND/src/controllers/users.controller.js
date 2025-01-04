@@ -138,10 +138,19 @@ const getUserProfileData= asyncHandler(async(req,res)=>{
 
 })
 
+const isUserLoggedIn= asyncHandler(async (req,res)=>{
+    const currentUser = req.User
+    if(!currentUser){
+    return res.status(200).json(new apiResponse(200,{userAuthorized:false},"user logged in"))
+    }
+    return res.status(200).json(new apiResponse(200,{userAuthorized:true},"user logged in"))
+})
+
 
 export {signUp
     ,login,
     logout,
-    getUserProfileData
+    getUserProfileData,
+    isUserLoggedIn
 }
 

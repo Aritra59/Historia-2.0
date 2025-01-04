@@ -1,18 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 // import { assets } from "../assets/assets";
 import { FaFacebook, FaInstagram, FaTwitter, FaSearch } from "react-icons/fa";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import {login,logout} from "../features/userAuth"
+import axios from "axios";
 
 const Navbar = () => {
-  // State to control the menu's open/close state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const selector = useSelector(state=>state.auth.authState)
+  const dispatcher = useDispatch()
   const [submenuOpen, setSubmenuOpen] = useState(false);
-
-  // Function to toggle menu open/close
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
+
+  //
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get('/users/isUserLoggedIn/');
+        if (response.data?.data.userAuthorized !== true) {
+          console.log(response.name?.status);
+          dispatcher(logout());
+        } 
+
+        else {
+          try {
+            const response2 = await axios.get('/users/getUserProfile');
+            dispatcher(login(response2.data));
+          } catch (error) {
+            console.error("Error fetching user profile:", error);
+            dispatcher(logout()); 
+          }
+        }
+        
+      } catch (error) {
+        console.error("Error checking if user is logged in:", error);
+        dispatcher(logout()); 
+      }
+    })();
+
+
+  }, []);
+  
+  
+
 
   const toggleSubmenu = () => {
     setSubmenuOpen((prev) => !prev);
@@ -24,7 +58,7 @@ const Navbar = () => {
         <nav className="absolute top-0 left-0 right-0 z-10 p-4 flex items-center justify-between bg-customBg">
           {/* Logo */}
           <h1 className="text-black text-lg md:text-3xl md:ml-9 ml-2 font-bold tracking-widest">
-            Historia
+            <Link to="/" >Historia</Link>
           </h1>
           {/* Hamburger Menu for Mobile */}
           <div className="flex items-center justify-between md:hidden">
@@ -85,7 +119,13 @@ const Navbar = () => {
               <hr className="block h-[3.5px] bg-emeraldHover" />
               {/* <span className="block h-0.5 w-0 bg-white group-hover:w-full transition-all duration-300 ease-in-out"></span> */}
             </NavLink>
-            <NavLink
+            {selector.isUserLoggedIn?
+            (<NavLink to="/profile">
+              <img src={selector.userData.data.avatar || null} className="h-10 w-10 
+              rounded-[30rem] bg-contain" alt="" />
+            </NavLink>)
+            :
+            (<NavLink
               to="/login"
               className="text-black relative group transition duration-200 hover:text-yellow-500 transform hover:-translate-y-1"
               onClick={() => setIsMenuOpen(false)}
@@ -93,7 +133,8 @@ const Navbar = () => {
               Login
               <hr className="block h-[3.5px] bg-emeraldHover" />
               {/* <span className="block h-0.5 w-0 bg-white group-hover:w-full transition-all duration-300 ease-in-out"></span> */}
-            </NavLink>
+            </NavLink>)
+            }
           </ul>
 
           {/* Nav Links - Partial-Screen Overlay for Mobile */}

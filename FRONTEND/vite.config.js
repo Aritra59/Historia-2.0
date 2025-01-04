@@ -7,7 +7,8 @@ export default defineConfig({
   server:{
 
     proxy:{
-      "/users":"http://localhost:8000"
+      "/users":"http://localhost:8000",
+      "/posts":"http://localhost:8000"
     }
   }
 })

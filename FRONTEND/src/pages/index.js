@@ -5,7 +5,7 @@ import Gallery from './Gallery'
 import Places from './Places'
 import SignUp from './signUp'
 import Login from './login'
-import Profile from './profile'
+import Profile from './Profile'
 
 
 

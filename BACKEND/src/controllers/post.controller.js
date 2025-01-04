@@ -267,7 +267,7 @@ const userPosts =await user.aggregate([
     }
   }
 ])
-return res.status(200).json(new apiResponse(200,userPosts[0],"found")
+return res.status(200).json(new apiResponse(200,userPosts[0]?.postsData,"found")
 )
 })
 
