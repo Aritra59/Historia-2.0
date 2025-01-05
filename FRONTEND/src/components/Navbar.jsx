@@ -44,9 +44,6 @@ const Navbar = () => {
 
 
   }, []);
-  
-  
-
 
   const toggleSubmenu = () => {
     setSubmenuOpen((prev) => !prev);
@@ -121,7 +118,7 @@ const Navbar = () => {
             </NavLink>
             {selector.isUserLoggedIn?
             (<NavLink to="/profile">
-              <img src={selector.userData.data.avatar || null} className="h-10 w-10 
+              <img src={selector.userData.data?.avatar || null} className="h-10 w-10 
               rounded-[30rem] bg-contain" alt="" />
             </NavLink>)
             :

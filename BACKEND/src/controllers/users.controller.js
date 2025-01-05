@@ -43,7 +43,9 @@ const signUp= asyncHandler(async(req,res)=>{
     if(!userEntry){
         throw new apiError(400,"user entry failed")
     }
-    return res.status(200).json(new apiResponse(200,userEntry,"signUP working"))
+    const isUserSignedUp = await user.findById(userEntry._id)
+    if(!isUserSignedUp) throw new apiError(400,"sign up failed")
+    return res.status(200).json(new apiResponse(200,isUserSignedUp,"signUP working"))
 })
 
 async function generateAccessAndRefreshToken(userId){
@@ -92,8 +94,8 @@ const login= asyncHandler(async(req,res)=>{
         secure:true
     }
     return res.status(200)
-    .cookie("accessToken",accessToken,Options)
-    .cookie("refreshToken",refreshToken,Options)
+    .cookie("accessToken",accessToken,{...Options,maxAge: process.env.ACCESS_TOKEN_EXPIRY_S})
+    .cookie("refreshToken",refreshToken,{...Options,maxAge: process.env.REFRESH_TOKEN_EXPIRY_S})
     .json(new apiResponse(200,currentUserData,"login success!!"))
     
 })
@@ -117,7 +119,7 @@ const logout = asyncHandler(async(req,res)=>{
     return res.clearCookie("accessToken",Options)
               .clearCookie("refreshToken",Options).json(
                   
-                  new apiResponse(200,`logout Successful for ${isUserValid.username}`)
+                  new apiResponse(200,{},`logout Successful for ${isUserValid.username}`)
             )
 
 })
@@ -146,11 +148,38 @@ const isUserLoggedIn= asyncHandler(async (req,res)=>{
     return res.status(200).json(new apiResponse(200,{userAuthorized:true},"user logged in"))
 })
 
+const sendCookies = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+
+    if(!isValidObjectId(id) && !id) throw new apiError(400,"bad id to throw cookies to")
+    
+    const validity= await user.findById(id)
+    if(!validity) throw new apiError(400,"invalid id to fetch data from and send cookies")
+
+    const {accessToken,refreshToken}=await  generateAccessAndRefreshToken(validity._id)
+    const Options= {
+        httpOnly:true,
+        secure:true
+    }
+    return res.status(200).cookie("accessToken",accessToken,{...Options,maxAge: process.env.ACCESS_TOKEN_EXPIRY_S})
+    .cookie("refreshToken",refreshToken,{...Options,maxAge: process.env.REFRESH_TOKEN_EXPIRY_S}).json(new apiResponse(200,"cookies fetched successfully"))
+})
+
+const clearCookies = asyncHandler(async(req,res)=>{
+    const Options= {
+        httpOnly:true,
+        secure:true,
+        
+    }
+    return res.status(200).clearCookie("accessToken",Options).clearCookie("refreshToken",Options).json(new apiResponse(200,"cookies removed successfully"))
+})
 
 export {signUp
     ,login,
     logout,
     getUserProfileData,
-    isUserLoggedIn
+    isUserLoggedIn,
+    sendCookies,
+    clearCookies
 }
 
