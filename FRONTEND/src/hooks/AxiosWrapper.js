@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState,useEffect } from "react"
 
- function ApiWrapperForGet(url){
+ function useApiWrapperForGet(url){
 const [data,setData] = useState({})
 const [loading,setLoading] = useState(false)
 const [error,setError] = useState(false)
@@ -16,7 +16,7 @@ useEffect(()=>{
             if(response.status!==200){
                 setError(true)
             }
-            setData(response?.data?.data)
+            setData(response?.data)
         } catch (error) {
             console.error(error)
         }

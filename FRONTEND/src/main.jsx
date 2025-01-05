@@ -7,7 +7,9 @@ import {Stories,Event,
   Places,
   SignUp,
   Login,Home,
-  Profile} from "./pages/index.js"
+  Profile,
+  Monuments
+} from "./pages/index.js"
   import { Provider } from 'react-redux'
   import globalStore,{persistor} from "./store/globalStore.js"
   import { PersistGate } from "redux-persist/integration/react";
@@ -26,6 +28,7 @@ const route= createBrowserRouter(
         <Route path="/signUp" element={<SignUp/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/monuments" element={<Monuments/>}/>
         {/* <Route path="/test" element={<Test/>}/> */}
         </Route>
   )

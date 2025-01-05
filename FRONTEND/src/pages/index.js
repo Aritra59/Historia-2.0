@@ -6,6 +6,7 @@ import Places from './Places'
 import SignUp from './signUp'
 import Login from './login'
 import Profile from './Profile'
+import Monuments from './Monuments'
 
 
 
@@ -14,5 +15,5 @@ export {Home,Stories,Event,
     Places,
     SignUp,
     Login,
-    Profile
+    Profile,Monuments
 }

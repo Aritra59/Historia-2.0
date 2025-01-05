@@ -4,7 +4,7 @@ import Loader from "../components/loader/Loader.jsx"
 
 function Profile() {
   const [data, setData] = useState(null); 
-  const [posts,setPosts] = useState({})
+  const [posts,setPosts] = useState([])
 
   useEffect(() => {
     // Fetch user data
@@ -76,7 +76,7 @@ function Profile() {
 
     </div>
 
-      <div>
+      {(posts.length <1 || typeof posts!== Array)?(<div className="text-black">No posts found</div>):(<div>
       {
         posts.map((data)=>(<div key={data.id} className="h-[8.7rem] w-44 bg-[#801d0c] flex m-10 justify-center items-center">
          {
@@ -84,7 +84,7 @@ function Profile() {
          }
         </div>))
       }
-      </div>
+      </div>)}
 
 </div>
     </>
