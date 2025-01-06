@@ -35,7 +35,7 @@ const Blog = () => {
 
 
                     <div className="mt-4 md:mt-0">
-                        <Link to="/">
+                        <Link to="/addPost">
                             <button className="bg-red-800 hover:bg-red-700 text-white px-5 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm lg:text-base font-semibold shadow-md transition-all">
                                 Share Your Story
                             </button>

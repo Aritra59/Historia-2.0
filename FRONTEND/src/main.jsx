@@ -13,6 +13,7 @@ import {Stories,Event,
   import { Provider } from 'react-redux'
   import globalStore,{persistor} from "./store/globalStore.js"
   import { PersistGate } from "redux-persist/integration/react";
+import AddPost from './pages/AddPost.jsx';
 
   
 
@@ -29,7 +30,7 @@ const route= createBrowserRouter(
         <Route path="/login" element={<Login/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/monuments" element={<Monuments/>}/>
-        {/* <Route path="/test" element={<Test/>}/> */}
+        <Route path="/addPost" element={<AddPost/>}/>
         </Route>
   )
 )

@@ -70,7 +70,7 @@ function Login() {
         console.error(error);
       }
 
-      navigate("/profile")
+      navigate("/")
 }
 
   return (
@@ -78,7 +78,6 @@ function Login() {
     ref={containerRef}
     className="h-screen w-screen flex flex-col md:flex-row overflow-hidden font-sans bg-gray-900 text-white"
   >
-    {/* Left Panel */}
     <div
       className="left-panel w-full h-screen flex flex-col justify-center items-center px-6 py-8 sm:p-12 md:w-1/2 relative"
       style={{

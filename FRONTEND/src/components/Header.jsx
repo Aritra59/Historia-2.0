@@ -1,4 +1,3 @@
-import React from "react";
 import { assets } from "../assets/assets";
 import gsap from "gsap";
 import { useRef, useEffect } from "react";
