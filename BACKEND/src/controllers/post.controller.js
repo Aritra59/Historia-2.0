@@ -284,7 +284,7 @@ const wantedData = await post.aggregate([
   }
 }
 ])
-return res.status(400).json(new apiResponse(400,wantedData[0],`u got ${count} posts`))
+return res.status(200).json(new apiResponse(200,wantedData,`u got ${count} posts`))
 })
 
 const getRecentPosts = asyncHandler(async (req, res) => {
@@ -303,6 +303,18 @@ const getRecentPosts = asyncHandler(async (req, res) => {
   return res.status(400).json(new apiResponse(400,wantedData[0],`u got ${count} posts`))
 })
 
+const getPostBasedOnTitle = asyncHandler(async(req,res)=>{
+  const{location} = req.params
+
+  if(!req.User) throw new apiError(404,"user not logged in or Invalid cookies")
+  if(!location) throw new apiError(404,"location invalid or page not found when finding for current location")
+  
+    const actualPost =await post.find({
+      title:location
+    })
+    if(actualPost.length<1) throw new apiError(404,"page not found")
+return res.status(200).json(new apiResponse(200,actualPost,"post found!"))
+})
 
 export {
   createPost,
@@ -313,5 +325,6 @@ export {
   getPostWithLocationName,
   getUserPosts,
   getPostWithLimitedData,
-  getRecentPosts
+  getRecentPosts,
+  getPostBasedOnTitle
 }

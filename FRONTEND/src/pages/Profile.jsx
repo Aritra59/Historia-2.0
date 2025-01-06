@@ -108,6 +108,7 @@ function Profile() {
           <button className="px-4 py-2 text-gray-500">Followers 0</button>
           <button className="px-4 py-2 text-gray-500">Following 0</button>
         </div>
+        <p className="my-10 font-mono text-2xl">YOUR CONTRIBUTIONS</p>
         {posts.length < 1 ? (
           <div className="mt-10 p-6 bg-white shadow-lg  rounded-lg w-full max-w-lg text-center">
             <p className="text-xl font-semibold mb-2">You don’t have any content yet 😓</p>
@@ -117,8 +118,10 @@ function Profile() {
         ) : (
           <div className="grid grid-cols-3 gap-4 ">
             {posts.map((data) => (
-              <div key={data.id} className="h-32 w-32 bg-gray-300 flex justify-center items-center">
-                <img src={data.postImg[0]} alt="Post" className="h-full w-full object-cover" />
+              <div key={data.id} className=" flex justify-center items-center ">
+                <img src={data.postImg[0]} alt="Post" className="h-full w-full  border-4
+                shadow-xl shadow-[#3E5879] aspect-video object-contain
+                 border-[#3E5879] rounded-xl" />
               </div>
             ))}
           </div>

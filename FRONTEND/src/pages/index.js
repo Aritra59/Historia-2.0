@@ -7,6 +7,9 @@ import SignUp from './signUp'
 import Login from './login'
 import Profile from './Profile'
 import Monuments from './Monuments'
+import ViewPage from './ViewPage'
+import AddPost from './AddPost.jsx';
+
 
 
 
@@ -15,5 +18,6 @@ export {Home,Stories,Event,
     Places,
     SignUp,
     Login,
-    Profile,Monuments
+    Profile,Monuments,
+    ViewPage,AddPost
 }
