@@ -272,20 +272,31 @@ return res.status(200).json(new apiResponse(200,userPosts[0]?.postsData,"found")
 })
 
 const getPostWithLimitedData = asyncHandler(async (req, res) => { //how many u want
-const {count,recent,previous} = req.query
-
-const wantedData = await post.aggregate([
-  {
-   $limit: parseInt(count)
-  },
-  {
-    $sort:{
-      createdAt:1
-  }
-}
-])
-return res.status(200).json(new apiResponse(200,wantedData,`u got ${count} posts`))
-})
+  const {count,recent,previous} = req.query
+  
+  const wantedData = await post.aggregate([
+    {
+      $limit:parseInt(count)
+    },
+    {
+      $lookup:{
+        from:"users",
+        localField:"owner",
+        foreignField:"_id",
+        as:"ownerData",
+        pipeline:[
+          {
+            $project:{
+              username:1
+            }
+          }
+        ]
+      }
+    }
+  
+  ])
+  return res.status(200).json(new apiResponse(200,wantedData,`u got ${count} posts`))
+  })
 
 const getRecentPosts = asyncHandler(async (req, res) => {
   const {count} = req.query
