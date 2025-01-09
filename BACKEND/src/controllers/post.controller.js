@@ -327,6 +327,20 @@ const getPostBasedOnTitle = asyncHandler(async(req,res)=>{
 return res.status(200).json(new apiResponse(200,actualPost,"post found!"))
 })
 
+const getPostsBasedOnId= asyncHandler(async(req,res)=>{
+
+  const {id}= req.params
+  if(!id) throw new apiError(400,"no id found from params fetched for post")
+
+  if(!isValidObjectId(id)) throw new apiError(400,"not valid object id.Retry !")
+  
+    const data = await post.findById(id).select("-password")
+
+  return res.status(200).json(new apiResponse(200,data,"post fetched successfully"))
+
+})
+
+
 export {
   createPost,
   updatePost,
@@ -337,5 +351,6 @@ export {
   getUserPosts,
   getPostWithLimitedData,
   getRecentPosts,
-  getPostBasedOnTitle
+  getPostBasedOnTitle,
+  getPostsBasedOnId
 }

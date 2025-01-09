@@ -10,7 +10,9 @@ import {Stories,Event,
   Profile,
   Monuments,
   AddPost,
-  ViewPage
+  ViewPage,
+  EditProfile
+
 } from "./pages/index.js"
   import { Provider } from 'react-redux'
   import globalStore,{persistor} from "./store/globalStore.js"
@@ -30,9 +32,12 @@ const route= createBrowserRouter(
         <Route path="/signUp" element={<SignUp/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile/edit/" element={<EditProfile/>}/>
+
         <Route path="/monuments" element={<Monuments/>}/>
         <Route path="/addPost" element={<AddPost/>}/>
         <Route path="/viewPage/:title" element={<ViewPage/>}/>
+        {/* <Route path="/editProfile/:title" element={<ViewPage/>}/> */}
         </Route>
   )
 )

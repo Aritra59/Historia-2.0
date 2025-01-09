@@ -6,10 +6,11 @@ import { useDispatch } from "react-redux"
 import { logout } from "../features/userAuth";
 
 function Profile() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [posts, setPosts] = useState([])
   const navigate = useNavigate()
   const dispatcher = useDispatch()
+  // ######################################################################1
   useEffect(() => {
     // Fetch user data
     async function updateData() {
@@ -26,7 +27,7 @@ function Profile() {
 
   }, []);
 
-
+// #######################################################################2
   // get user posts
   useState(() => {
     (async () => {
@@ -59,9 +60,10 @@ function Profile() {
       console.error(error)
     }
   }
+  console.log(data)
 
 
-  if (!data) {
+  if (Array.isArray(data) && data.length<=0) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <Loader />
@@ -78,7 +80,9 @@ function Profile() {
         <h1 className="mt-4 text-3xl font-semibold">{data.fullname || "Aritra"}</h1>
 
 
-        <button className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Edit profile</button>
+        <button className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg"
+        onClick={()=>navigate("/profile/edit")}
+        >Edit profile</button>
         <button
           onClick={logOutMethod}
           className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg">logout</button>
@@ -109,7 +113,7 @@ function Profile() {
           <button className="px-4 py-2 text-gray-500">Following 0</button>
         </div>
         <p className="my-10 font-mono text-2xl">YOUR CONTRIBUTIONS</p>
-        {posts.length < 1 ? (
+        {posts && posts.length < 1 ? (
           <div className="mt-10 p-6 bg-white shadow-lg  rounded-lg w-full max-w-lg text-center">
             <p className="text-xl font-semibold mb-2">You don’t have any content yet 😓</p>
             <p className="text-gray-500">You can always come back and choose what to upload from all your amazing photos. You can come back and upload at any time.</p>
@@ -117,8 +121,8 @@ function Profile() {
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-4 ">
-            {posts.map((data) => (
-              <div key={data.id} className=" flex justify-center items-center ">
+            {posts?.map((data) => (
+              <div key={data._id} className=" flex justify-center items-center ">
                 <img src={data.postImg[0]} alt="Post" className="h-full w-full  border-4
                 shadow-xl shadow-[#3E5879] aspect-video object-contain
                  border-[#3E5879] rounded-xl" />

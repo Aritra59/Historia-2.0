@@ -2,7 +2,7 @@ import { Router  } from "express";
 import { createPost, deletePost, getAllPostData, 
     updatePost, updatePostImage,getPostWithLocationName,
     getUserPosts,getPostWithLimitedData,
-    getPostBasedOnTitle
+    getPostBasedOnTitle,getPostsBasedOnId
  } from "../controllers/post.controller.js";
 import { upload } from "../middlewares/multer.js";
 import { verifyJWT} from "../middlewares/auth.middleware.js"
@@ -20,6 +20,7 @@ postRouter.route("/getUserPosts/").get(verifyJWT,getUserPosts)
 postRouter.route("/getPosts/").get(getUserPosts)
 postRouter.route("/getLimitedPosts/").get(getPostWithLimitedData)
 postRouter.route("/getPostOnTitle/:location").get(verifyJWT,getPostBasedOnTitle)
+postRouter.route("/getPostById/:id").get(getPostsBasedOnId)
 
 
 export {postRouter}

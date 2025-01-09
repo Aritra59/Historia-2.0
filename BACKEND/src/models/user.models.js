@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema({
     },
     avatar:{
         type:String,
-        required:true
+        required:true,
+        default:"https://pixabay.com/vectors/user-avatar-user-icon-account-icon-6380868/"
     }
 })
 

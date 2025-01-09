@@ -31,6 +31,8 @@ const authSlice = createSlice({
            state.authState.userData=action.payload
            state.authState.userStatus="logged In"
         },
+
+    
        
     }
 })

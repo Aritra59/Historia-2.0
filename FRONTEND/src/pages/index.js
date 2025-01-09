@@ -9,6 +9,7 @@ import Profile from './Profile'
 import Monuments from './Monuments'
 import ViewPage from './ViewPage'
 import AddPost from './AddPost.jsx';
+import EditProfile from './EditProfile.jsx'
 
 
 
@@ -19,5 +20,5 @@ export {Home,Stories,Event,
     SignUp,
     Login,
     Profile,Monuments,
-    ViewPage,AddPost
+    ViewPage,AddPost,EditProfile
 }
