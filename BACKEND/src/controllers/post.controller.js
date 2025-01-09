@@ -236,10 +236,11 @@ return res.status(200).json(
 
 })
 
+
 const getUserPosts = asyncHandler(async(req,res)=>{ //will paginate later
 const currentUser = req.User
 const {pageNo}= req.query
-const initialStart= 10
+// const initialStart= 10
 
 if(!currentUser && !isValidObjectId){
 throw new apiError(400,"please login First")

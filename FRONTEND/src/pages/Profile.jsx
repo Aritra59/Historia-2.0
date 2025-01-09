@@ -80,9 +80,7 @@ function Profile() {
         <h1 className="mt-4 text-3xl font-semibold">{data.fullname || "Aritra"}</h1>
 
 
-        <button className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg"
-        onClick={()=>navigate("/profile/edit")}
-        >Edit profile</button>
+        <button className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Edit profile</button>
         <button
           onClick={logOutMethod}
           className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg">logout</button>
