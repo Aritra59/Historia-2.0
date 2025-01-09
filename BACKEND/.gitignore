@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -28,3 +29,6 @@ bun.lockb
 =======
 .node_modules
 >>>>>>> ab40f9677ffb2da0432ab6dffd870be2cbe4e274
+=======
+node_modules
+>>>>>>> ef79aff01e3088503d2177d781510a817a1d1051
