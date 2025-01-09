@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -24,3 +25,6 @@ dist-ssr
 *.sw?
 bun.lockb
 .env
+=======
+.node_modules
+>>>>>>> ab40f9677ffb2da0432ab6dffd870be2cbe4e274
