@@ -18,7 +18,7 @@ function Profile() {
         const response = await axios.get('/users/getUserProfile');
 
         setData(response.data.data);
-        // console.log(response) 
+        console.log(data) 
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -80,7 +80,9 @@ function Profile() {
         <h1 className="mt-4 text-3xl font-semibold">{data.fullname || "Aritra"}</h1>
 
 
-        <button className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Edit profile</button>
+        <button 
+        onClick={()=>navigate("/profile/edit")}
+        className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Edit profile</button>
         <button
           onClick={logOutMethod}
           className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg">logout</button>
@@ -104,7 +106,7 @@ function Profile() {
 
       <div className="mt-10 flex flex-col items-center 	">
         <div className="flex gap-6 mb-6">
-          <button className="px-4 py-2 bg-black text-white rounded-full">Gallery 0</button>
+          <button className="px-4 py-2 bg-black text-white rounded-full">Gallery {posts.length}</button>
           <button className="px-4 py-2 text-gray-500">Collections</button>
           <button className="px-4 py-2 text-gray-500">Statistics</button>
           <button className="px-4 py-2 text-gray-500">Followers 0</button>
