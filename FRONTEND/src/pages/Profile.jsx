@@ -18,7 +18,7 @@ function Profile() {
         const response = await axios.get('/users/getUserProfile');
 
         setData(response.data.data);
-        console.log(data) 
+        console.log(data)
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -27,7 +27,7 @@ function Profile() {
 
   }, []);
 
-// #######################################################################2
+  // #######################################################################2
   // get user posts
   useState(() => {
     (async () => {
@@ -63,7 +63,7 @@ function Profile() {
   console.log(data)
 
 
-  if (Array.isArray(data) && data.length<=0) {
+  if (Array.isArray(data) && data.length <= 0) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <Loader />
@@ -80,9 +80,9 @@ function Profile() {
         <h1 className="mt-4 text-3xl font-semibold">{data.fullname || "Aritra"}</h1>
 
 
-        <button 
-        onClick={()=>navigate("/profile/edit")}
-        className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Edit profile</button>
+        <button
+          onClick={() => navigate("/profile/edit")}
+          className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Edit profile</button>
         <button
           onClick={logOutMethod}
           className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg">logout</button>
@@ -125,7 +125,7 @@ function Profile() {
               <div key={data._id} className=" flex justify-center items-center ">
                 <img src={data.postImg[0]} alt="Post" className="h-full w-full  border-4
                 shadow-xl shadow-[#3E5879] aspect-video object-contain
-                 border-[#3E5879] rounded-xl" />
+                border-[#3E5879] rounded-xl" />
               </div>
             ))}
           </div>

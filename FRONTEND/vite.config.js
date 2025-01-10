@@ -8,7 +8,8 @@ export default defineConfig({
 
     proxy:{
       "/users":"http://localhost:8000",
-      "/posts":"http://localhost:8000"
+      "/posts":"http://localhost:8000",
+      "/likes":"http://localhost:8000",
     }
   }
 })

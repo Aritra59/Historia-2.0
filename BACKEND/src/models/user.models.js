@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         default:"https://pixabay.com/vectors/user-avatar-user-icon-account-icon-6380868/"
+    },
+    likes:{
+        type:[mongoose.Types.ObjectId],
+        ref:"post"
     }
 })
 

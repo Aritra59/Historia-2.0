@@ -33,7 +33,8 @@ const postSchema  = new mongoose.Schema({
     howToReachContent:{
         type:String,
         default:"you can try to fin this on G-MAPS "
-    }
+    },
+    
 },{timestamps:true})
 
 postSchema.plugin(mongooseAggregatePaginate)

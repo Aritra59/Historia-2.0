@@ -11,7 +11,7 @@ const createPost = asyncHandler(async (req, res) => {
   const { title, content, postLocation } = req.body
   const currentUser = req.User
 
-  if (!(title || content ||postLocation)) {
+  if (!(title || content || postLocation)) {
     throw new apiError(400, "cannot find title or content in creatingPost controller")
   }
   const postImgs = await req.files
@@ -184,162 +184,207 @@ const updatePostImage = asyncHandler(async (req, res) => {
 })
 
 const getAllPostData = asyncHandler(async (req, res) => {
-const currentUser = req.User
-const {pageNo}= req.query
-const initialStart= 10
+  const currentUser = req.User
+  const { pageNo } = req.query
+  const initialStart = 10
 
-if(!currentUser ){
-  throw new apiError(400,"please login to see content")
-}
-
-const allData = await post.aggregate([
-  {
-    $match: {}  
-  },
-  {
-    $sort: {
-      createdBy: 1  
-    }
-  },
-  {
-    $skip:(pageNo - 1) * initialStart
-  },
-  {
-    $limit: initialStart 
+  if (!currentUser) {
+    throw new apiError(400, "please login to see content")
   }
-])
+
+  const allData = await post.aggregate([
+    {
+      $match: {}
+    },
+    {
+      $sort: {
+        createdBy: 1
+      }
+    },
+    {
+      $skip: (pageNo - 1) * initialStart
+    },
+    {
+      $limit: initialStart
+    }
+  ])
 
 
-return res.status(200).json(new apiResponse(200,allData,"fetched all post Data!"))
+  return res.status(200).json(new apiResponse(200, allData, "fetched all post Data!"))
 
 })
 
 const getPostWithLocationName = asyncHandler(async (req, res) => {
-const {location} = req.query
-if(!req.User){
-  throw new apiError(401,"user not logged in")
-}
-if(!location){
-  throw new apiError(400,"location not provided")
-}
-const locationBasedData = await post.aggregate([
-   {
-    $match:{
-      postLocation:location
+  const { location } = req.query
+  if (!req.User) {
+    throw new apiError(401, "user not logged in")
+  }
+  if (!location) {
+    throw new apiError(400, "location not provided")
+  }
+  const locationBasedData = await post.aggregate([
+    {
+      $match: {
+        postLocation: location
+      }
     }
-   }
-])
+  ])
 
-return res.status(200).json(
-  new apiResponse(200,locationBasedData,"found")
-)
+  return res.status(200).json(
+    new apiResponse(200, locationBasedData, "found")
+  )
 
 })
 
 
-const getUserPosts = asyncHandler(async(req,res)=>{ //will paginate later
-const currentUser = req.User
-const {pageNo}= req.query
-// const initialStart= 10
+const getUserPosts = asyncHandler(async (req, res) => { //will paginate later
+  const currentUser = req.User
+  const { pageNo } = req.query
+  // const initialStart= 10
 
-if(!currentUser && !isValidObjectId){
-throw new apiError(400,"please login First")
-}
-
-const userPosts =await user.aggregate([
-  {
-    $match:{
-      _id:req?.User
-    }
-  },
-    {
-      $lookup:{
-      from:"posts",
-      localField:"_id",
-      foreignField:"owner",
-      as:"postsData"
-    }
-  },
-  {
-    $project:{
-      username:1,
-      userLocation:1,
-      postsData:1
-    }
+  if (!currentUser && !isValidObjectId) {
+    throw new apiError(400, "please login First")
   }
-])
-return res.status(200).json(new apiResponse(200,userPosts[0]?.postsData,"found")
-)
+
+  const userPosts = await user.aggregate([
+    {
+      $match: {
+        _id: req?.User
+      }
+    },
+    {
+      $lookup: {
+        from: "posts",
+        localField: "_id",
+        foreignField: "owner",
+        as: "postsData"
+      }
+    },
+    {
+      $project: {
+        username: 1,
+        userLocation: 1,
+        postsData: 1
+      }
+    }
+  ])
+  return res.status(200).json(new apiResponse(200, userPosts[0]?.postsData, "found")
+  )
 })
 
 const getPostWithLimitedData = asyncHandler(async (req, res) => { //how many u want
-  const {count,recent,previous} = req.query
-  
+  const { count, recent, previous } = req.query
+
   const wantedData = await post.aggregate([
     {
-      $limit:parseInt(count)
+      $limit: parseInt(count)
     },
     {
-      $lookup:{
-        from:"users",
-        localField:"owner",
-        foreignField:"_id",
-        as:"ownerData",
-        pipeline:[
+      $lookup: {
+        from: "users",
+        localField: "owner",
+        foreignField: "_id",
+        as: "ownerData",
+        pipeline: [
           {
-            $project:{
-              username:1
+            $project: {
+              username: 1
             }
           }
         ]
       }
     }
-  
+
   ])
-  return res.status(200).json(new apiResponse(200,wantedData,`u got ${count} posts`))
-  })
+  return res.status(200).json(new apiResponse(200, wantedData, `u got ${count} posts`))
+})
 
 const getRecentPosts = asyncHandler(async (req, res) => {
-  const {count} = req.query
-  
+  const { count } = req.query
+
   const wantedData = await post.aggregate([
     {
-      $sort:{
-        createdAt:0
+      $sort: {
+        createdAt: 0
       }
     },
     {
       $limit: parseInt(count)
     },
   ])
-  return res.status(400).json(new apiResponse(400,wantedData[0],`u got ${count} posts`))
+  return res.status(400).json(new apiResponse(400, wantedData[0], `u got ${count} posts`))
 })
 
-const getPostBasedOnTitle = asyncHandler(async(req,res)=>{
-  const{location} = req.params
+const getPostBasedOnTitle = asyncHandler(async (req, res) => {
+  const { location } = req.params
 
-  if(!req.User) throw new apiError(404,"user not logged in or Invalid cookies")
-  if(!location) throw new apiError(404,"location invalid or page not found when finding for current location")
+  if (!req.User) throw new apiError(404, "user not logged in or Invalid cookies")
+  if (!location) throw new apiError(404, "location invalid or page not found when finding for current location")
+
+  const actualPost = await post.find({
+    title: location
+  })
+  if (actualPost.length < 1) throw new apiError(404, "page not found")
+  return res.status(200).json(new apiResponse(200, actualPost, "post found!"))
+})
+
+const getPostsBasedOnId = asyncHandler(async (req, res) => {
+
+  const { id } = req.params
+  if (!id) throw new apiError(400, "no id found from params fetched for post")
+
+  if (!isValidObjectId(id)) throw new apiError(400, "not valid object id.Retry !")
+
+  const data = await post.findById(id).select("-password")
+
+  return res.status(200).json(new apiResponse(200, data, "post fetched successfully"))
+
+})
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+const getALike = asyncHandler(async (req, res) => {
+  const { postId } = req.params;
+  const currentUser = req.User;
+
+  if (!currentUser) throw new apiError(400, "Please login");
+  if (!postId || !isValidObjectId(postId)) {
+    throw new apiError(400, "Please provide a valid postId");
+  }
+
+  const userValidity = await user.findById(currentUser);
+  if (!userValidity) throw new apiError(400, "User not found");
+
+  console.log("Request postId:", postId);
+  console.log("User likes before update:", userValidity.likes);
+
+  const postIdString = postId.toString();
+  const likes = userValidity.likes || [];
   
-    const actualPost =await post.find({
-      title:location
-    })
-    if(actualPost.length<1) throw new apiError(404,"page not found")
-return res.status(200).json(new apiResponse(200,actualPost,"post found!"))
+  if (likes.includes(postIdString)) {
+    userValidity.likes = likes.filter((like) => like.toString() !== postIdString);
+    console.log(`PostId ${postId} removed from likes.`);
+  } else {
+    userValidity.likes.push(postIdString);
+    console.log(`PostId ${postId} added to likes.`);
+  }
+
+  await userValidity.save({ validateBeforeSave: false });
+
+  console.log("User likes after update:", userValidity.likes);
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, userValidity.likes, "Likes updated successfully"));
+});
+
+const fetchLikes= asyncHandler(async(req,res)=>{
+  const current=  req.User
+  if(!current) throw new apiError(400,"please login")
+  const data =await user.findById(current)
+if(!data) throw new apiError(400,"no data found for the user")
+  return res.status(200).json(new apiResponse(200,data.likes,"likes fetched from the user"))
 })
 
-const getPostsBasedOnId= asyncHandler(async(req,res)=>{
-
-  const {id}= req.params
-  if(!id) throw new apiError(400,"no id found from params fetched for post")
-
-  if(!isValidObjectId(id)) throw new apiError(400,"not valid object id.Retry !")
-  
-    const data = await post.findById(id).select("-password")
-
-  return res.status(200).json(new apiResponse(200,data,"post fetched successfully"))
-
-})
 
 
 export {
@@ -353,5 +398,7 @@ export {
   getPostWithLimitedData,
   getRecentPosts,
   getPostBasedOnTitle,
-  getPostsBasedOnId
+  getPostsBasedOnId,
+  getALike,
+  fetchLikes
 }
