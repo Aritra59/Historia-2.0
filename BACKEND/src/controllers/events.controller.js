@@ -46,9 +46,32 @@ const fetchEventWithId = asyncHandler(async(req,res)=>{
 
 })
 
+const fetchAllEvents= asyncHandler(async (req,res)=>{
+    const allData = await event.find({})
+    if(!allData) throw new apiError(400,"no data or events available")
+        return res.status(200).json(new apiResponse(200,allData,"all data fetched!"))
+})
+
+const deleteEventWithId= asyncHandler(async(req,res)=>{
+    const {eventId} = req.params
+
+    if(!eventId) throw new apiError(400,"event id not provided to delete")
+    if(!isValidObjectId(eventId)) throw new apiError(400,"event id not valid")
+        
+        const eventData =await event.findByIdAndDelete(eventId)
+
+    if(!eventData) throw new apiError(400,"event id not deleted")
+    
+        return res.status(200).json(new apiResponse(200,eventData,"event deleted successfully!"))
+
+   
+})
+
 export {
     createEvent,
     // editEvent,
-    // deleteEvent,
-    fetchEventWithId
+    deleteEventWithId,
+    fetchEventWithId,
+    fetchAllEvents,
+    
 }
