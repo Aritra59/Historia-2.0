@@ -72,7 +72,7 @@ const ViewPage = () => {
                                 className="w-full h-full object-cover rounded-lg shadow-lg"
                             />
                             <p className="text-center text-sm italic py-2 text-gray-700">
-                                The Majestic Gateway to Gayen Baganbari
+                           
                             </p>
                         </div>
                         
@@ -94,7 +94,7 @@ const ViewPage = () => {
                                 className="w-full h-full object-cover rounded-lg shadow-lg"
                             />
                             <p className="text-center text-sm italic py-2 text-gray-700">
-                                The Heroic Sculpture of Dhanyakuria
+                              
                             </p>
                         </div>
                         

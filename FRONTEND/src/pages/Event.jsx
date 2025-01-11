@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import EventBg from "../components/category/events/Bg-Events.png";
 import Clock from "../components/category/events/clock.png";
 import Location from "../components/category/events/location.png";

@@ -124,7 +124,27 @@ const Catalog = () => {
           animation: card-animation 0.6s ease-out forwards;
           animation-delay: 0.9s;
         }
-
+        .animate-card-6 {
+          animation: card-animation 0.6s ease-out forwards;
+          animation-delay: 0.9s;
+        }
+        .animate-card-7 {
+          animation: card-animation 0.6s ease-out forwards;
+          animation-delay: 0.9s;
+        }
+        .animate-card-8 {
+          animation: card-animation 0.6s ease-out forwards;
+          animation-delay: 0.9s;
+        }
+        .animate-card-9{
+          animation: card-animation 0.6s ease-out forwards;
+          animation-delay: 0.9s;
+        }
+        .animate-card-10 {
+          animation: card-animation 0.6s ease-out forwards;
+          animation-delay: 0.9s;
+        }
+        
         /* Hover scale effect */
         .hover\\:scale-105:hover {
           transform: scale(1.05);

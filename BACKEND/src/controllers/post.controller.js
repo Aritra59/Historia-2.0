@@ -143,6 +143,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
 })
 
+
 const updatePostImage = asyncHandler(async (req, res) => {
   const { postId } = req.params
 

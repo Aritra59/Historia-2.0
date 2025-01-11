@@ -1,4 +1,4 @@
-import  { useCallback, useEffect, useRef,useState } from 'react';
+import  {useEffect, useRef,useState } from 'react';
 import axios from "axios"
 import { gsap } from 'gsap';
 
@@ -8,7 +8,6 @@ const Gallery = () => {
   const [handleOwner,setHandleOwner] = useState("")
   const [likeHandler,setLikehandler] = useState([])
   const [likes,setLikes]= useState([])
-  // const [items,setItems] = useState()
 
 
   useEffect(() => {

@@ -15,9 +15,11 @@ const EditProfile = () => {
     let [fullName, setFullName] = useState("");
     let [avatar, setAvatar] = useState(null)
     let [location, setLocation] = useState("")
-    // let [responses,setResponses] = useState({})
+
+   
     let navigator = useNavigate()
 
+    // submitter handler
     const handleSubmit = async function (e) {
         e.preventDefault();
         try {
@@ -45,6 +47,12 @@ const EditProfile = () => {
 
     };
 
+    // post delete
+
+
+
+
+// loader section
     if (!selector?.isUserLoggedIn) {
         return (
             <div className="h-screen w-screen flex justify-center items-center">
