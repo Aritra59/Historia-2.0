@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../components/loader/Loader.jsx"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { logout } from "../features/userAuth";
 
@@ -10,7 +10,11 @@ function Profile() {
   const [posts, setPosts] = useState([])
   const navigate = useNavigate()
   const dispatcher = useDispatch()
+
+
+  let [deleteState, setDeleteState] = useState({})
   // ######################################################################1
+
   useEffect(() => {
     // Fetch user data
     async function updateData() {
@@ -29,7 +33,7 @@ function Profile() {
 
   // #######################################################################2
   // get user posts
-  useState(() => {
+  useEffect(() => {
     (async () => {
       try {
         const response = await axios.get("posts/getUserPosts")
@@ -45,7 +49,7 @@ function Profile() {
     }
     )()
 
-  }, [])
+  }, [deleteState])
 
   const logOutMethod = async () => {
 
@@ -62,6 +66,16 @@ function Profile() {
   }
   console.log(data)
 
+  async function deletePost(data) {
+    try {
+      const deletedPost = await axios.get(`posts/deletePost/${data}`)
+      setDeleteState(deletedPost.data.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
 
   if (Array.isArray(data) && data.length <= 0) {
     return (
@@ -70,6 +84,7 @@ function Profile() {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-[#F6F2E8] p-6 font-sans text-black">
@@ -120,13 +135,26 @@ function Profile() {
             <button className="mt-4 px-6 py-2 bg-green-500 text-white rounded-lg">Get Inspired</button>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 ">
+          <div className="grid grid-cols-3 gap-4">
             {posts?.map((data) => (
-              <div key={data._id} className=" flex justify-center items-center ">
-                <img src={data.postImg[0]} alt="Post" className="h-full w-full  border-4
-                shadow-xl shadow-[#3E5879] aspect-video object-contain
-                border-[#3E5879] rounded-xl" />
+              <Link key={data._id} to={`/viewPage/${data._id}`}>
+              <div  className="relative flex justify-center items-center">
+                <img
+                  src={data.postImg[0]}
+                  alt="Post"
+                  className="h-full w-full border-4 shadow-xl shadow-[#3E5879] aspect-video object-contain border-[#3E5879] rounded-xl"
+                />
+                <button
+                  onClick={() => {
+                    deletePost(data._id);
+                  }}
+                  className="absolute bottom-2 right-2 "
+                  title="Delete Post"
+                >
+                  🗑️
+                </button>
               </div>
+              </Link>
             ))}
           </div>
         )}
@@ -134,5 +162,6 @@ function Profile() {
     </div>
   );
 }
+
 
 export default Profile;

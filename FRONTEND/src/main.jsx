@@ -4,7 +4,6 @@ import { createBrowserRouter,RouterProvider,Route, createRoutesFromElements } fr
 import Layout from './pages/Layout.jsx';
 import {Stories,Event,
   Gallery,
-  Places,
   SignUp,
   Login,Home,
   Profile,
@@ -19,7 +18,6 @@ import {Stories,Event,
   import { PersistGate } from "redux-persist/integration/react";
 
   
-
 const route= createBrowserRouter(
 
   createRoutesFromElements(
@@ -28,7 +26,6 @@ const route= createBrowserRouter(
         <Route path='/stories' element={<Stories/>} />
         <Route path='/event' element={<Event/>} />
         <Route path='/gallery' element={<Gallery/> } />
-        <Route path='/places' element={<Places/>}/>
         <Route path="/signUp" element={<SignUp/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/profile" element={<Profile/>}/>

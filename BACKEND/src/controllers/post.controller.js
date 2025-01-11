@@ -8,10 +8,10 @@ import { post } from "../models/post.models.js";
 
 
 const createPost = asyncHandler(async (req, res) => {
-  const { title, content, postLocation } = req.body
+  const { title, content, postLocation, howToReachContent } = req.body
   const currentUser = req.User
 
-  if (!(title || content || postLocation)) {
+  if ([title, content, postLocation, howToReachContent ].some((data)=>data?.trim()=="")) {
     throw new apiError(400, "cannot find title or content in creatingPost controller")
   }
   const postImgs = await req.files
@@ -38,7 +38,8 @@ const createPost = asyncHandler(async (req, res) => {
     content,
     owner: currentUser,
     postImg: allImgPaths,
-    postLocation
+    postLocation,
+    howToReachContent
   })
 
   const isPostValid = await post.aggregate([
