@@ -123,8 +123,7 @@ function Profile() {
           </button>
           <button className="px-4 py-2 text-gray-500">Collections</button>
           <button className="px-4 py-2 text-gray-500">Statistics</button>
-          <button className="px-4 py-2 text-gray-500">Followers 0</button>
-          <button className="px-4 py-2 text-gray-500">Following 0</button>
+          {/* <button className="px-4 py-2 text-gray-500">Followers 0</button> */}
         </div>
         <p className="my-10 font-mono text-2xl">YOUR CONTRIBUTIONS</p>
         {posts && posts.length < 1 ? (
@@ -173,9 +172,9 @@ function Profile() {
         )}
 
         <Link to={"/addPost"}
-        className="text-[5rem] text-red-500 
+        className="text-[4rem] text-red-500 
         shadow-black	
-        absolute bottom-4 right-4" title="addPost">&#43;</Link>
+        absolute bottom-3 right-1" title="addPost">&#43;</Link>
       </div>
     </div>
   );
