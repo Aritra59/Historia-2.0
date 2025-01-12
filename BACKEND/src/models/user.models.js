@@ -56,8 +56,13 @@ userSchema.methods.checkPassword= async function(pass){
 if(!pass){
     console.error("no password password")
 }
-return await bcrypt.compare(pass,this.password)
-
+try {
+    const passData = await bcrypt.compare(pass,this.password)
+    return passData
+    
+} catch (error) {
+    console.log(error)
+}
 }
 
 userSchema.methods.generateAccessToken =  function (){
@@ -79,11 +84,10 @@ userSchema.methods.generateRefreshToken =  function (){
 
 
 userSchema.methods.comparePassword = async function(password){
-    if(!password)throw new Error(400,"password not found")
-        
-        const isTrue =  await bcrypt.compare(password,this.password)
-        if(!isTrue) throw new Error(400,"password comparison failure")
-        
-            return isTrue
+    if(!password){
+        throw new Error("no password recieved")
+    }
+    const isPasswordCorrect= await bcrypt.compare(password,this.password)
+    return isPasswordCorrect
 }
 export const user= mongoose.model("user",userSchema)

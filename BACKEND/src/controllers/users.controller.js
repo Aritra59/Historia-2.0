@@ -79,7 +79,8 @@ const login = asyncHandler(async (req, res) => {
         throw new apiError(400, "user not exists.Please sign Up!")
     }
 
-    const isPassword = exists.comparePassword(password)
+    const isPassword = await exists.comparePassword(password)
+    console.log(isPassword)
     if (isPassword == false) throw new apiError(400, "password not correct!")
 
     const currentUserData = await user.findById(exists._id).select("-password ")

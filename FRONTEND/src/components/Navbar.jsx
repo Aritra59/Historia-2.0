@@ -107,15 +107,7 @@ const Navbar = () => {
               <hr className="block h-[3.5px] bg-emeraldHover" />
               {/* <span className="block h-0.5 w-0 bg-white group-hover:w-full transition-all duration-300 ease-in-out"></span> */}
             </NavLink>
-            <NavLink
-              to="/places"
-              className="text-black relative group transition duration-200 hover:text-yellow-500 transform hover:-translate-y-1"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Places
-              <hr className="block h-[3.5px] bg-emeraldHover" />
-              {/* <span className="block h-0.5 w-0 bg-white group-hover:w-full transition-all duration-300 ease-in-out"></span> */}
-            </NavLink>
+       
             {selector.isUserLoggedIn?
             (<NavLink to="/profile">
               <img src={selector.userData.data?.avatar || null} className="h-10 w-10 
