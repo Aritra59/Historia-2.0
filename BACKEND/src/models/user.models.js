@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     likes:{
         type:[mongoose.Types.ObjectId],
         ref:"post"
+    },
+    admin:{
+        type:Boolean,
+        default:false
     }
 })
 

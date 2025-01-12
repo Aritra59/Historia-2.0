@@ -206,6 +206,28 @@ const uploaderStatus = await cloudUploader(updatedImg.path)
     return res.status(200).json(new apiResponse(200, updatedState, "user update success"))
 
 })
+
+const toggleUserAuthorization = asyncHandler(async(req,res)=>{
+    const {userId} = req.params
+    if(!isValidObjectId(userId)) throw new apiError(400,"invalid userid to authorize")
+    
+    const userData = await user.findById(userId)
+    if(!userData) throw new apiError(400,"user does not exist to authorize")
+        
+        if(userData.admin!==true)
+            userData.admin=true
+        else{
+            userData.admin=false
+        }
+        await userData.save({validateBeforeSave:false})
+        
+        const updatedSettings=await user.findById(userData._id).select("-password -accessToken -refreshToken -likes")
+        if(!updatedSettings) throw new apiError(400,"didnt find user after authorization")
+
+        
+return res.status(200).json(new apiResponse(200,updatedSettings,"admin permission toggled"))
+})
+
 export {
     signUp
     , login,
@@ -213,6 +235,6 @@ export {
     getUserProfileData,
     isUserLoggedIn,
     sendCookies,
-    clearCookies,editUser
+    clearCookies,editUser,toggleUserAuthorization
 }
 

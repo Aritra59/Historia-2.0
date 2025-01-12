@@ -1,6 +1,7 @@
 import  {useEffect, useRef,useState } from 'react';
 import axios from "axios"
 import { gsap } from 'gsap';
+import { useSelector } from 'react-redux';
 
 const Gallery = () => {
   const galleryRef = useRef();
@@ -8,7 +9,10 @@ const Gallery = () => {
   const [handleOwner,setHandleOwner] = useState("")
   const [likeHandler,setLikehandler] = useState([])
   const [likes,setLikes]= useState([])
+  const [deleteState, setDeleteState] = useState({});
 
+
+  const selector = useSelector(state=>state.auth.authState.userData)
 
   useEffect(() => {
 
@@ -31,7 +35,7 @@ const Gallery = () => {
       }
     })()
 
-  },[])
+  },[deleteState])
 
   useEffect(()=>{  
 (async()=>{
@@ -57,10 +61,17 @@ const Gallery = () => {
         console.error(error)
       }
 
-   
-
   }
 
+
+  async function deletePost(e, data) {
+    try {
+      const deletedPost = await axios.get(`posts/deletePost/${data}`);
+      setDeleteState(deletedPost.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <div ref={galleryRef} className="container mx-auto px-6 py-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -76,7 +87,14 @@ const Gallery = () => {
 
               <div className='flex'>
                 <button onClick={()=>handleLikes(item)}>{(likeHandler.includes(item._id) || likes.includes(item._id))?"💗":"🤍"}</button>
-                <button></button>
+                
+                <button
+                 className="absolute bottom-4"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deletePost(e, item._id);
+                }}
+                >{selector.data.admin==true?"🗑️":null}</button>
               </div>
 
             </div>

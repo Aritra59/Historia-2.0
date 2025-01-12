@@ -69,11 +69,11 @@ const ViewPage = () => {
 
     return (
         <div className="bg-black relative h-[64vh]">
-            <div className="min-h-screen flex items-center justify-center relative">
+            <div className="min-h-[65vh] flex items-center justify-center relative">
                 <img
                     src={data.postImg?.[1]}
                     alt="Gayen Baganbari"
-                    className="absolute inset-0 w-full h-[91vh] object-cover"
+                    className="absolute inset-0 w-full h-[65vh] object-cover"
                 />
                 <div className="absolute inset-0 flex flex-col items-start justify-end text-white z-10 px-6 pb-20">
                     <h1 className="text-5xl font-bold mb-4">
