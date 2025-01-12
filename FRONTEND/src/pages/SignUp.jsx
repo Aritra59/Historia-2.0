@@ -1,17 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import img1 from "../components/blog/img/xd.jpg";
 import img2 from "../assets/vic.jpg";
+import {useDispatch} from "react-redux"
+import { signUp,logout } from "../features/userAuth";
+// import Loader from "../components/loader/Loader";
 
 function SignUp() {
   let [username, setUsername] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [profilePic, setProfilePic] = useState(null);
+
+
   const containerRef = useRef(null);
   const lineRef = useRef(null);
+  const dispatcher = useDispatch()
+  const navigate = useNavigate();
 
   useEffect(() => {
     // GSAP animations
@@ -46,7 +53,7 @@ function SignUp() {
       "<0.5"
     );
   }, []);
-
+// signUp logic -- a) post signup req (b) add res data to state (c) send cookies (d) handle errors(clear state and cookies)
   const handleSignUp = async function (e) {
     e.preventDefault();
     try {
@@ -54,13 +61,24 @@ function SignUp() {
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("profilePic", profilePic);
+      formData.append("avatar", profilePic);
 
+// return (<Loader/>)
       const response = await axios.post("/users/signUp", formData);
-      console.log(response.data);
+      
+      console.log(response.data.data);
+      dispatcher(signUp(response.data))
+
+     await axios.get(`users/sendCookies/${response.data?.data?._id}`) 
+     navigate("/")
+
     } catch (error) {
+      dispatcher(logout())
+      // await axios.get("users/clearCookies/")
       console.error("Error during sign-up:", error);
     }
+
+  
   };
 
   return (
@@ -86,7 +104,7 @@ function SignUp() {
           Join us to preserve and celebrate the rich tapestry of human history.
         </p>
         <blockquote className="text-sm sm:text-base md:text-lg text-gray-300 text-center italic px-4">
-          "History lives in those who remember."
+         { "History lives in those who remember."}
         </blockquote>
       </div>
 
@@ -105,10 +123,14 @@ function SignUp() {
           Sign Up for Historical Insights
         </h1>
         <p className="italic text-sm sm:text-base md:text-lg text-gray-300 text-center mb-8">
-          "Connecting the past to the present for the future."
+          {"Connecting the past to the present for the future."}
         </p>
         <form
-          onSubmit={handleSignUp}
+          onSubmit={
+            handleSignUp
+          
+        
+          }
           className="w-full max-w-xs sm:max-w-sm"
           encType="multipart/form-data"
         >
@@ -152,6 +174,7 @@ function SignUp() {
           </div>
           <button
             type="submit"
+            
             className="w-full p-3 bg-gradient-to-r from-amber-500 to-orange-700 rounded-lg font-bold text-white hover:opacity-90 transition-all duration-200 text-sm sm:text-base"
           >
             SIGN UP

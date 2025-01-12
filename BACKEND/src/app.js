@@ -19,6 +19,10 @@ import cors from "cors"
 
 
     import { userRouter } from "./routes/user.routes.js"
+import { postRouter } from "./routes/post.routes.js"
+import { eventsRouter } from "./routes/events.routes.js"
 
     app.use("/users",userRouter)
+    app.use("/posts",postRouter)
+    app.use("/events",eventsRouter)
     export {app}

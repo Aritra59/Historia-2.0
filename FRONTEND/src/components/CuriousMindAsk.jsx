@@ -5,11 +5,7 @@ const CuriousMindAsk = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleAnswer = (index) => {
-    if (activeIndex === index) {
-      setActiveIndex(null); // Collapse if already expanded
-    } else {
-      setActiveIndex(index); // Expand new answer
-    }
+    setActiveIndex(activeIndex === index ? null : index); // Toggle the answer visibility
   };
 
   const questions = [
@@ -22,25 +18,24 @@ const CuriousMindAsk = () => {
   ];
 
   return (
-    <div className="relative py-12 px-6  h-[75vh]">
+    <div className="relative py-12 px-6 h-auto flex flex-col md:flex-row md:items-start gap-6">
       {/* Left Top Title */}
-      <h2 className="absolute top-10 left-10 text-xl font-semibold text-gray-800 flex items-center">
-        <span className="mr-2 text-black">●</span> Curious Minds Ask
-      </h2>
+      <div className="md:w-1/4">
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <span className="mr-2 text-black">●</span> Curious Minds Ask
+        </h2>
+      </div>
 
       {/* FAQ Section */}
-      <div className="absolute top-24 right-10 w-3/4 bg-white rounded-lg shadow-2xl p-10">
+      <div className="w-full md:w-3/4 bg-white rounded-lg shadow-2xl p-6">
         {questions.map((item, index) => (
-          <div
-            key={item.id}
-            className="border-b border-gray-300 overflow-hidden"
-          >
+          <div key={item.id} className="border-b border-gray-300 overflow-hidden">
             {/* Question Header */}
             <div
-              className="flex justify-between items-center py-6 cursor-pointer hover:text-blue-600 transition-colors"
+              className="flex justify-between items-center py-4 cursor-pointer hover:text-blue-600 transition-colors"
               onClick={() => toggleAnswer(index)}
             >
-              <h3 className="text-xl font-semibold text-gray-800">{item.question}</h3>
+              <h3 className="text-lg font-semibold text-gray-800">{item.question}</h3>
               <span
                 className={`text-gray-500 transform transition-transform ${
                   activeIndex === index ? "rotate-90" : "rotate-0"
@@ -53,10 +48,10 @@ const CuriousMindAsk = () => {
             {/* Answer */}
             <div
               className={`overflow-hidden transition-all duration-500 ${
-                activeIndex === index ? "max-h-48 p-6" : "max-h-0"
+                activeIndex === index ? "max-h-48 p-4" : "max-h-0"
               }`}
             >
-              <p className="text-gray-700 text-base">{item.answer}</p>
+              <p className="text-gray-700 text-sm">{item.answer}</p>
             </div>
           </div>
         ))}
@@ -66,3 +61,4 @@ const CuriousMindAsk = () => {
 };
 
 export default CuriousMindAsk;
+
