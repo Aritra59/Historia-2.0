@@ -27,7 +27,7 @@ const Gallery = () => {
   useEffect(()=>{
     (async()=>{
       try {
-        const res = await axios.get("/posts/getLimitedPosts/?count=10") 
+        const res = await axios.get("https://historia-frontend.onrender.com/posts/getLimitedPosts/?count=10") 
         setResponse(res.data.data)
         setHandleOwner(response[0]?.ownerData[0].username || "johnDoe")
       } catch (error) {
@@ -40,7 +40,7 @@ const Gallery = () => {
   useEffect(()=>{  
 (async()=>{
   try {
-      const likeData= await axios.get(`/posts/fetchLikes`) 
+      const likeData= await axios.get(`https://historia-frontend.onrender.com/posts/fetchLikes`) 
     console.log(likeData.data.data)
     setLikes(likeData.data.data)
   } catch (error) {
@@ -54,7 +54,7 @@ const Gallery = () => {
   
       try {
         console.log(item._id)
-        const likeState = await axios.get(`posts/likeSome/${item._id}`)
+        const likeState = await axios.get(`https://historia-frontend.onrender.com/posts/likeSome/${item._id}`)
         console.log(likeState.data.data)
         setLikehandler(likeState?.data?.data)
       } catch (error) {
@@ -66,7 +66,7 @@ const Gallery = () => {
 
   async function deletePost(e, data) {
     try {
-      const deletedPost = await axios.get(`posts/deletePost/${data}`);
+      const deletedPost = await axios.get(`https://historia-frontend.onrender.com/posts/deletePost/${data}`);
       setDeleteState(deletedPost.data.data);
     } catch (error) {
       console.error(error);

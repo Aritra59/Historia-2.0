@@ -27,7 +27,7 @@ const EditProfile = () => {
       formData.append("avatar", avatar);
       formData.append("userLocation", location);
 
-      const response = await axios.patch("/users/editUser/", formData);
+      const response = await axios.patch("https://historia-frontend.onrender.com/users/editUser/", formData);
       dispatcher(signUp(response.data));
       await axios.get(`users/sendCookies/${response.data?.data?._id}`);
 

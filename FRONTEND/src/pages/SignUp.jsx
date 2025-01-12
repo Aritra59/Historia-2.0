@@ -64,12 +64,12 @@ function SignUp() {
       formData.append("avatar", profilePic);
 
 // return (<Loader/>)
-      const response = await axios.post("/users/signUp", formData);
+      const response = await axios.post("https://historia-frontend.onrender.com/users/signUp", formData);
       
       console.log(response.data.data);
       dispatcher(signUp(response.data))
 
-     await axios.get(`users/sendCookies/${response.data?.data?._id}`) 
+     await axios.get(`https://historia-frontend.onrender.com/users/sendCookies/${response.data?.data?._id}`) 
      navigate("/")
 
     } catch (error) {

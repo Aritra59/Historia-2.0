@@ -57,7 +57,7 @@ function Login() {
     e.preventDefault()
 
     try {
-        const response = await axios.post('/users/login',{
+        const response = await axios.post('https://historia-frontend.onrender.com/users/login',{
         password:password,
         email: email
         });

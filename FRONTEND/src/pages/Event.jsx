@@ -13,7 +13,7 @@ const Event = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("/events/fetchAllEvent/");
+        const response = await axios.get("https://historia-frontend.onrender.com/events/fetchAllEvent/");
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching events:", error);
