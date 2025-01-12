@@ -18,7 +18,7 @@ function Profile() {
     // Fetch user data
     async function updateData() {
       try {
-        const response = await axios.get("https://historia-frontend.onrender.com/users/getUserProfile");
+        const response = await axios.get("https://historia-frontend.onrender.com/users/getUserProfile/");
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -65,7 +65,7 @@ function Profile() {
     }
   }
 
-  if (Array.isArray(data) && data.length <= 0) {
+  if (Array.isArray(data) && data.length >= 0) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <Loader />
