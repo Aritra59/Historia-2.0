@@ -20,7 +20,6 @@ function Profile() {
       try {
         const response = await axios.get("/users/getUserProfile");
         setData(response.data.data);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -145,30 +144,38 @@ function Profile() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4">
-            {posts?.map((data) => (
-              <div key={data._id} className="relative flex justify-center items-center">
-                <Link to={`/viewPage/${data._id}`}>
-                  <img
-                    src={data.postImg[0]}
-                    alt="Post"
-                    className="h-full w-full border-4 shadow-xl shadow-[#3E5879] aspect-video object-contain border-[#3E5879] rounded-xl"
-                  />
-                </Link>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deletePost(e, data._id);
-                  }}
-                  className="absolute bottom-2 right-2"
-                  title="Delete Post"
-                >
-                  🗑️
-                </button>
-              </div>
-            ))}
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 shadow-slate-500	 ">
+          {posts?.map((data) => (
+            <div
+              key={data._id}
+              className="relative flex justify-center items-center bg-white shadow-lg rounded-lg overflow-hidden"
+            >
+              <Link to={`/viewPage/${data._id}`} className="block w-full h-full">
+                <img
+                  src={data.postImg[0]}
+                  alt="Post"
+                  className="w-full h-64 object-cover border-4 shadow-xl shadow-[#3E5879] border-[#3E5879] rounded-lg"
+                />
+              </Link>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deletePost(e, data._id);
+                }}
+                className="absolute bottom-2 right-2  text-white p-2 rounded-full"
+                title="Delete Post"
+              >
+                🗑️
+              </button>
+            </div>
+          ))}
+        </div>
         )}
+
+        <Link to={"/addPost"}
+        className="text-[5rem] text-red-500 
+        shadow-black	
+        absolute bottom-4 right-4" title="addPost">&#43;</Link>
       </div>
     </div>
   );

@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <header className="relative pt-[4.1rem]">
+      <header className="relative pt-[3.7rem]">
         <nav className="absolute top-0 left-0 right-0 z-10 p-4 flex items-center justify-between bg-customBg">
           {/* Logo */}
           <h1 className="text-black text-lg md:text-3xl md:ml-9 ml-2 font-bold tracking-widest">
@@ -65,7 +65,7 @@ const Navbar = () => {
               aria-label="Open Menu" // Added accessible label for better usability
             >
               {/* Replaced ☰ with AiOutlineMenu for a modern icon */}
-              <AiOutlineMenu size={24} />
+              <AiOutlineMenu size={24} className="text-black"/>
             </button>
           </div>
 
@@ -188,20 +188,23 @@ const Navbar = () => {
             >
               Places
             </Link>
-            <Link
+            {selector.isUserLoggedIn?
+            (<NavLink to="/profile">
+              <img src={selector.userData.data?.avatar || null} className="h-10 w-10 
+              rounded-[30rem] bg-contain" alt="" />
+            </NavLink>)
+            :
+            (<NavLink
               to="/login"
-              className="text-white text-xl cursor-pointer"
+              className="text-black relative group transition duration-200 hover:text-yellow-500 transform hover:-translate-y-1"
               onClick={() => setIsMenuOpen(false)}
             >
               Login
-            </Link>
-            <Link
-              to="/signUp"
-              className="text-white text-xl cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              SignUp
-            </Link>
+              <hr className="block h-[3.5px] bg-emeraldHover" />
+              {/* <span className="block h-0.5 w-0 bg-white group-hover:w-full transition-all duration-300 ease-in-out"></span> */}
+            </NavLink>)
+            }
+
             <div className="mt-auto flex space-x-4 ">
               <a href="#" className="text-white">
                 <FaFacebook size={20} />

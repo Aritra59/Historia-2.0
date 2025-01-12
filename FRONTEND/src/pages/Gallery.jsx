@@ -94,7 +94,7 @@ const Gallery = () => {
                   e.stopPropagation();
                   deletePost(e, item._id);
                 }}
-                >{selector.data.admin==true?"🚫":null}</button>
+                >{selector?.data?.admin==true?"🚫":null}</button>
               </div>
 
             </div>
