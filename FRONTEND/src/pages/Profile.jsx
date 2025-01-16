@@ -18,7 +18,7 @@ function Profile() {
     // Fetch user data
     async function updateData() {
       try {
-        const response = await axios.get("https://historia-frontend.onrender.com/users/getUserProfile");
+        const response = await axios.get("https://historia-2-0.onrender.com/users/getUserProfile");
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -32,7 +32,7 @@ function Profile() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("https://historia-frontend.onrender.com/posts/getUserPosts/");
+        const response = await axios.get("https://historia-2-0.onrender.com/posts/getUserPosts/");
         if (response.status !== 200) {
           throw new Error(response);
         }
@@ -46,7 +46,7 @@ function Profile() {
 
   const logOutMethod = async () => {
     try {
-      const logoutStatus = await axios.get("https://historia-frontend.onrender.com/users/logout");
+      const logoutStatus = await axios.get("https://historia-2-0.onrender.com/users/logout");
       if (!logoutStatus) throw new Error("Logout failure");
       dispatcher(logout());
       navigate("/");
@@ -58,7 +58,7 @@ function Profile() {
 
   async function deletePost(e, data) {
     try {
-      const deletedPost = await axios.get(`https://historia-frontend.onrender.com/posts/deletePost/${data}`);
+      const deletedPost = await axios.get(`https://historia-2-0.onrender.com/posts/deletePost/${data}`);
       setDeleteState(deletedPost.data.data);
     } catch (error) {
       console.error(error);
