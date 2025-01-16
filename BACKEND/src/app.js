@@ -15,6 +15,7 @@ import cors from "cors"
     app.use(cookieParser())
     app.use(cors({
         origin:"https://nimble-elf-bfc962.netlify.app",
+        allowedHeaders: ['Content-Type', 'Authorization'],
         credentials:true
     }))
 
