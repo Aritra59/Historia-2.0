@@ -14,7 +14,8 @@ import cors from "cors"
     }))
     app.use(cookieParser())
     app.use(cors({
-        origin:"*"
+        origin:"https://musical-fox-86f743.netlify.app",
+        credentials:true
     }))
 
 
