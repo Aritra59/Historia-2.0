@@ -57,10 +57,12 @@ function Login() {
     e.preventDefault()
 
     try {
-        const response = await axios.post('https://historia-frontend.onrender.com/users/login',{
+        const response = await axios.post('https://historia-2-0.onrender.com/users/login',{
         password:password,
         email: email
-        });
+        },
+        {withCredentials:true}
+      );
         console.log(response.data);
           dispatcher(login(response.data))
         
