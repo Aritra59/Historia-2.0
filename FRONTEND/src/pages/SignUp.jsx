@@ -4,81 +4,63 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import img1 from "../components/blog/img/xd.jpg";
 import img2 from "../assets/vic.jpg";
-import {useDispatch} from "react-redux"
-import { signUp,logout } from "../features/userAuth";
-// import Loader from "../components/loader/Loader";
+import { useDispatch } from "react-redux";
+import { signUp, logout } from "../features/userAuth";
 
 function SignUp() {
-  let [username, setUsername] = useState("");
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [profilePic, setProfilePic] = useState(null);
-
-
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
   const containerRef = useRef(null);
   const lineRef = useRef(null);
-  const dispatcher = useDispatch()
+  const dispatcher = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // GSAP animations
     const tl = gsap.timeline({ defaults: { duration: 1, ease: "power2.out" } });
-
-    // Fade-in animation for the container
-    tl.fromTo(
-      containerRef.current,
-      { opacity: 0 },
-      { opacity: 1, ease: "power2.out" }
-    );
-
-    // Panels animation
-    tl.fromTo(
-      ".right-panel",
-      { x: "100%" },
-      { x: "0%", ease: "power2.out" },
-      "<0.5"
-    );
-    tl.fromTo(
-      ".left-panel",
-      { x: "-100%" },
-      { x: "0%", ease: "power2.out" },
-      "<0.5"
-    );
-
-    // Middle line animation (top to bottom)
-    tl.fromTo(
-      lineRef.current,
-      { height: "0%" },
-      { height: "100%", ease: "power2.out" },
-      "<0.5"
-    );
+    tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1 });
+    tl.fromTo(".right-panel", { x: "100%" }, { x: "0%" }, "<0.5");
+    tl.fromTo(".left-panel", { x: "-100%" }, { x: "0%" }, "<0.5");
+    tl.fromTo(lineRef.current, { height: "0%" }, { height: "100%" }, "<0.5");
   }, []);
-// signUp logic -- a) post signup req (b) add res data to state (c) send cookies (d) handle errors(clear state and cookies)
-  const handleSignUp = async function (e) {
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
     try {
+      if (!username || !email || !password || !profilePic) {
+        console.error("All fields are required, including profile picture.");
+        return alert("Please fill out all fields, including the profile picture.");
+      }
+
       const formData = new FormData();
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
       formData.append("avatar", profilePic);
 
-// return (<Loader/>)
-      const response = await axios.post("https://historia-2-0.onrender.com/users/signUp", formData);
-      
-      console.log(response.data.data);
-      dispatcher(signUp(response.data))
+      // API Call: Sign-up request
+      const response = await axios.post(
+        "https://historia-2-0.onrender.com/users/signUp",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-     await axios.get(`https://historia-frontend.onrender.com/users/sendCookies/${response.data?.data?._id}`,{ withCredentials: true }) 
-     navigate("/")
+      console.log("Sign-up response:", response.data);
+      dispatcher(signUp(response.data));
 
+      // API Call: Set cookies
+      await axios.get(
+        `https://historia-frontend.onrender.com/users/sendCookies/${response.data?.data?._id}`,
+        { withCredentials: true }
+      );
+
+      navigate("/");
     } catch (error) {
-      dispatcher(logout())
-      // await axios.get("users/clearCookies/")
-      console.error("Error during sign-up:", error);
+      console.error("Error during sign-up:", error.response?.data || error.message);
+      alert("Sign-up failed. Please try again.");
+      dispatcher(logout());
     }
-
-  
   };
 
   return (
@@ -104,7 +86,7 @@ function SignUp() {
           Join us to preserve and celebrate the rich tapestry of human history.
         </p>
         <blockquote className="text-sm sm:text-base md:text-lg text-gray-300 text-center italic px-4">
-         { "History lives in those who remember."}
+          {"History lives in those who remember."}
         </blockquote>
       </div>
 
@@ -126,11 +108,7 @@ function SignUp() {
           {"Connecting the past to the present for the future."}
         </p>
         <form
-          onSubmit={
-            handleSignUp
-          
-        
-          }
+          onSubmit={handleSignUp}
           className="w-full max-w-xs sm:max-w-sm"
           encType="multipart/form-data"
         >
@@ -174,7 +152,6 @@ function SignUp() {
           </div>
           <button
             type="submit"
-            
             className="w-full p-3 bg-gradient-to-r from-amber-500 to-orange-700 rounded-lg font-bold text-white hover:opacity-90 transition-all duration-200 text-sm sm:text-base"
           >
             SIGN UP
