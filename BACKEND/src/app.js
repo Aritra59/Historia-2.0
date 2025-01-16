@@ -13,9 +13,19 @@ import cors from "cors"
         limit:"16kb"
     }))
     app.use(cookieParser())
+
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', 'https://nimble-elf-bfc962.netlify.app');
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.header('Access-Control-Allow-Credentials', 'true');
+        next();
+      });
+      
     app.use(cors({
         origin:"https://nimble-elf-bfc962.netlify.app",
         allowedHeaders: ['Content-Type', 'Authorization'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials:true
     }))
 
