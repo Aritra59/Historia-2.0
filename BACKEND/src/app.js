@@ -14,7 +14,7 @@ import cors from "cors"
     }))
     app.use(cookieParser())
     app.use(cors({
-        origin:["https://teamhistoria.netlify.app","http://http://localhost:5173"]
+        origin:"*"
     }))
 
 
