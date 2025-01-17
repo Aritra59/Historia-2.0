@@ -40,7 +40,9 @@ const Gallery = () => {
   useEffect(()=>{  
 (async()=>{
   try {
-      const likeData= await axios.get(`https://historia-2-0.onrender.com/posts/fetchLikes`) 
+      const likeData= await axios.get(`https://historia-2-0.onrender.com/posts/fetchLikes`,{
+        withCredentials:true
+      }) 
     console.log(likeData.data.data)
     setLikes(likeData.data.data)
   } catch (error) {
