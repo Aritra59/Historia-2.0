@@ -23,7 +23,7 @@ import cors from "cors"
       });
       
     app.use(cors({
-        origin:"https://nimble-elf-bfc962.netlify.app",
+        origin:"https://prismatic-starburst-80b306.netlify.app",
         allowedHeaders: ['Content-Type', 'Authorization'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials:true
