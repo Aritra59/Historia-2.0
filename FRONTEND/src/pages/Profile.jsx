@@ -64,7 +64,9 @@ function Profile() {
 
   async function deletePost(e, data) {
     try {
-      const deletedPost = await axios.get(`https://historia-2-0.onrender.com/posts/deletePost/${data}`);
+      const deletedPost = await axios.get(`https://historia-2-0.onrender.com/posts/deletePost/${data}`,{
+        withCredentials:true
+      });
       setDeleteState(deletedPost.data.data);
     } catch (error) {
       console.error(error);
