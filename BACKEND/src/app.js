@@ -15,7 +15,7 @@ import cors from "cors"
     app.use(cookieParser())
 
     app.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', 'https://nimble-elf-bfc962.netlify.app');
+        res.header('Access-Control-Allow-Origin', 'https://glowing-scone-2f6a61.netlify.app/');
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         res.header('Access-Control-Allow-Credentials', 'true');
