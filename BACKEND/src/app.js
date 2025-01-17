@@ -25,7 +25,7 @@ import cors from "cors"
     app.use(cors({
         origin:"https://glowing-scone-2f6a61.netlify.app",
         allowedHeaders: ['Content-Type', 'Authorization'],
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE',"PATCH"],
         credentials:true
     }))
 
