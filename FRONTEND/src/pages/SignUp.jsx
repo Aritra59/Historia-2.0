@@ -51,7 +51,7 @@ function SignUp() {
 
       // API Call: Set cookies
       await axios.get(
-        `https://historia-frontend.onrender.com/users/sendCookies/${response.data?.data?._id}`,
+        `https://historia-2-0.onrender.com/users/sendCookies/${response.data?.data?._id}`,
         { withCredentials: true }
       );
 
