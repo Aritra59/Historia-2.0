@@ -23,7 +23,7 @@ import cors from "cors"
       });
       
     app.use(cors({
-        origin:"https://musical-stroopwafel-75f558.netlify.app",
+        origin:"https://glowing-scone-2f6a61.netlify.app/",
         allowedHeaders: ['Content-Type', 'Authorization'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials:true
