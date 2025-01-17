@@ -18,7 +18,10 @@ function Profile() {
     // Fetch user data
     async function updateData() {
       try {
-        const response = await axios.get("https://historia-2-0.onrender.com/users/getUserProfile");
+        const response = await axios.get("https://historia-2-0.onrender.com/users/getUserProfile",{
+          withCredentials: true, // Include cookies
+
+        });
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -32,7 +35,10 @@ function Profile() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("https://historia-2-0.onrender.com/posts/getUserPosts/");
+        const response = await axios.get("https://historia-2-0.onrender.com/posts/getUserPosts",{
+          withCredentials: true, // Include cookies
+
+        });
         if (response.status !== 200) {
           throw new Error(response);
         }

@@ -27,9 +27,16 @@ const EditProfile = () => {
       formData.append("avatar", avatar);
       formData.append("userLocation", location);
 
-      const response = await axios.patch("https://historia-frontend.onrender.com/users/editUser/", formData);
+      const response = await axios.patch("https://historia-2-0.onrender.com/users/editUser", formData,{
+        "ContentType":"multipart/form-data",
+        withCredentials:true
+      },
+      
+    );
       dispatcher(signUp(response.data));
-      await axios.get(`users/sendCookies/${response.data?.data?._id}`);
+      await axios.get(`users/sendCookies/${response.data?.data?._id}`,{
+        withCredentials:true
+      });
 
       console.log(response.data.data);
 

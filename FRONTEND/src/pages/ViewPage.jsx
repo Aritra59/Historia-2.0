@@ -12,7 +12,11 @@ const ViewPage = () => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await axios.get(`https://historia-frontend.onrender.com/posts/getPostById/${title}`); // Replace with your API endpoint
+                const response = await axios.get(`https://historia-2-0.onrender.com/posts/getPostById/${title}`,
+                    {
+                        withCredentials:true
+                    }
+                ); // Replace with your API endpoint
                 setData(response.data.data);
                 setLoading(false);
                 console.log(response.data.data);
