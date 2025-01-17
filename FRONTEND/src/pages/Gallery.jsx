@@ -56,7 +56,9 @@ const Gallery = () => {
   
       try {
         console.log(item._id)
-        const likeState = await axios.get(`https://historia-2-0.onrender.com/posts/likeSome/${item._id}`)
+        const likeState = await axios.get(`https://historia-2-0.onrender.com/posts/likeSome/${item._id}`,{
+          withCredentials:true
+        })
         console.log(likeState.data.data)
         setLikehandler(likeState?.data?.data)
       } catch (error) {
