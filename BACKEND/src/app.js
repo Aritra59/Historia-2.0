@@ -23,7 +23,7 @@ import cors from "cors"
       });
       
     app.use(cors({
-        origin:"https://prismatic-starburst-80b306.netlify.app",
+        origin:"https://musical-stroopwafel-75f558.netlify.app",
         allowedHeaders: ['Content-Type', 'Authorization'],
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials:true
