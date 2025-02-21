@@ -387,7 +387,17 @@ if(!data) throw new apiError(400,"no data found for the user")
   return res.status(200).json(new apiResponse(200,data.likes,"likes fetched from the user"))
 })
 
+const searchPosts= asyncHandler(async(req,res)=>{
+  const {parameter} = req.query
+  const query = parameter.split("-")
+    
+    const result = await post.find(
+        { $or: query.map(q => ({ title: { $regex: q, $options: "i" } })) }
 
+    )
+  if(!result) throw new apiError(404,"no data found from search")
+  res.status(200).json(new apiResponse(200,result,"posts fetched"))
+})
 
 export {
   createPost,
@@ -402,5 +412,6 @@ export {
   getPostBasedOnTitle,
   getPostsBasedOnId,
   getALike,
-  fetchLikes
+  fetchLikes,
+  searchPosts
 }
