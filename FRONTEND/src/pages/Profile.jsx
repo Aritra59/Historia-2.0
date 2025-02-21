@@ -52,7 +52,10 @@ function Profile() {
 
   const logOutMethod = async () => {
     try {
-      const logoutStatus = await axios.get("https://historia-2-0.onrender.com/users/logout");
+      const logoutStatus = await axios.get("https://historia-2-0.onrender.com/users/logout",{
+        withCredentials:true
+
+      });
       if (!logoutStatus) throw new Error("Logout failure");
       dispatcher(logout());
       navigate("/");
