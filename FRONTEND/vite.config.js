@@ -7,9 +7,9 @@ export default defineConfig({
   server:{
 
     proxy:{
-      "/users":"https://historia-frontend.onrender.com",
-      "/posts":"https://historia-frontend.onrender.com",
-      "/events":"https://historia-frontend.onrender.com",
+      "/users":"https://historia-2-0.onrender.com",
+      "/posts":"https://historia-2-0.onrender.com",
+      "/events":"https://historia-2-0.onrender.com",
     }
   }
 })
