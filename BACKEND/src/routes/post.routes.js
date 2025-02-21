@@ -11,8 +11,8 @@ import { verifyJWT } from "../middlewares/auth.middleware.js"
 
 const postRouter = Router()
 // postRouter.use(verifyJWT)
-postRouter.route("/addPost").post(verifyJWT, upload.array("postImg", 2), createPost)
-postRouter.route("/updatePost/:postId").post(upload.array("postImg", 2), updatePost)
+postRouter.route("/addPost").post(verifyJWT, upload.array("postImg", 3), createPost)
+postRouter.route("/updatePost/:postId").post(upload.array("postImg", 3), updatePost)
 postRouter.route("/deletePost/:postId").get(verifyJWT,deletePost)
 postRouter.route("/updatePostImage/:postId").post(upload.array("postImg", 2), updatePostImage)
 postRouter.route("/allPosts/").get(getAllPostData)

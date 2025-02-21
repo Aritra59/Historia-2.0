@@ -12,7 +12,9 @@ const ViewPage = () => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await axios.get(`/posts/getPostById/${title}`); // Replace with your API endpoint
+                const response = await axios.get(`/posts/getPostById/${title}`,{
+                    withCredentials:true
+                }); // Replace with your API endpoint
                 setData(response.data.data);
                 setLoading(false);
                 console.log(response.data.data);
@@ -71,7 +73,7 @@ const ViewPage = () => {
         <div className="bg-black relative h-[64vh]">
             <div className="min-h-[65vh] flex items-center justify-center relative">
                 <img
-                    src={data.postImg?.[1]}
+                    src={data.postImg?.[0]}
                     alt="Gayen Baganbari"
                     className="absolute inset-0 w-full h-[65vh] object-cover"
                 />
@@ -80,7 +82,7 @@ const ViewPage = () => {
                         {data.title || "GAYEN BAGANBARI (1742)"}
                     </h1>
                     <p className="text-lg max-w-2xl text-start">
-                        {data.content ||
+                        {data.postLocation ||
                             "Dhanyakuria's architectural marvel, combining European and Indian design elements, stands as a testament to historical grandeur and beauty."}
                     </p>
                 </div>
@@ -94,23 +96,23 @@ const ViewPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <img
-                                src={data.postImg?.[0]}
+                                src={data.postImg?.[1]}
                                 alt="The Majestic Gateway"
                                 className="w-full h-full object-cover rounded-lg shadow-lg"
                             />
-                            <p className="text-center text-sm italic py-2 text-gray-700">
+                            {/* <p className="text-center text-sm italic py-2 text-gray-700">
                                 The Majestic Gateway to Gayen Baganbari
-                            </p>
+                            </p> */}
                         </div>
                         <div>
                             <img
-                                src={data.postImg?.[0]}
+                                src={data.postImg?.[2]}
                                 alt="The Heroic Sculpture"
                                 className="w-full h-full object-cover rounded-lg shadow-lg"
                             />
-                            <p className="text-center text-sm italic py-2 text-gray-700">
+                            {/* <p className="text-center text-sm italic py-2 text-gray-700">
                                 The Heroic Sculpture of Dhanyakuria
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                     <div className="mt-8 bg-white p-6 shadow-lg rounded-lg">
@@ -118,7 +120,7 @@ const ViewPage = () => {
                             {data.content ||
                                 "The sculpture of two men fighting with a lion at Dhanyakuria, located in the Gayen Baganbari estate, is a remarkable depiction of bravery and strength. The craftsmanship captures intricate details and evokes emotions as one observes the story unfold."}
                         </p>
-                        <p className="text-lg text-gray-700 leading-relaxed mt-4">
+                        {/* <p className="text-lg text-gray-700 leading-relaxed mt-4">
                             The grand entrance gate of Gayen Baganbari in Dhanyakuria is a striking architectural feature that immediately
                             catches any visitor’s eye. This large structure stands as a testament to the opulence and artistic sensibilities of
                             the era.
@@ -127,7 +129,7 @@ const ViewPage = () => {
                             The gate is heavily inspired by European architectural styles. Flanked by sculptures of lions and adorned with ornate
                             carvings, it showcases a blend of cultural motifs. The gate represents the fusion of colonial influences with local
                             design sensibilities.
-                        </p>
+                        </p> */}
                     </div>
                 </div>
                 <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg">
@@ -138,13 +140,13 @@ const ViewPage = () => {
                             {renderHowToReach(data.howToReachContent) || "if no information available.Refer GMAPS"}
                             <p>If no information available.Refer GMAPS</p>
                         </div>
-                        <div className="mt-6 md:mt-0 md:w-1/3 flex justify-center">
+                        {/* <div className="mt-6 md:mt-0 md:w-1/3 flex justify-center">
                             <img
                                 // src={compass}
                                 alt="Compass"
                                 className="rounded-lg"
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

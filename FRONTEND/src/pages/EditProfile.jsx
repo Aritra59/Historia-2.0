@@ -27,9 +27,14 @@ const EditProfile = () => {
       formData.append("avatar", avatar);
       formData.append("userLocation", location);
 
-      const response = await axios.patch("/users/editUser/", formData);
+      const response = await axios.patch("/users/editUser/", formData,{
+        "ContentType":"multipart/form-data",
+        withCredentials:true
+      });
       dispatcher(signUp(response.data));
-      await axios.get(`users/sendCookies/${response.data?.data?._id}`);
+      await axios.get(`users/sendCookies/${response.data?.data?._id}`,{
+        withCredentials:true
+      });
 
       console.log(response.data.data);
 

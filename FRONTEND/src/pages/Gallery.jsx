@@ -30,6 +30,7 @@ const Gallery = () => {
         const res = await axios.get("/posts/getLimitedPosts/?count=10") 
         setResponse(res.data.data)
         setHandleOwner(response[0]?.ownerData[0].username || "johnDoe")
+        console.log(response[0]?.ownerData)
       } catch (error) {
         console.error(error)
       }
@@ -40,7 +41,9 @@ const Gallery = () => {
   useEffect(()=>{  
 (async()=>{
   try {
-      const likeData= await axios.get(`/posts/fetchLikes`) 
+      const likeData= await axios.get(`/posts/fetchLikes`,{
+        withCredentials:true
+      }) 
     console.log(likeData.data.data)
     setLikes(likeData.data.data)
   } catch (error) {
@@ -54,7 +57,9 @@ const Gallery = () => {
   
       try {
         console.log(item._id)
-        const likeState = await axios.get(`posts/likeSome/${item._id}`)
+        const likeState = await axios.get(`posts/likeSome/${item._id}`,{
+          withCredentials:true
+        })
         console.log(likeState.data.data)
         setLikehandler(likeState?.data?.data)
       } catch (error) {
@@ -80,7 +85,7 @@ const Gallery = () => {
             <img src={item.postImg[0]} alt={item.title} className="w-full h-60 object-cover" />
             <div className="p-4 flex justify-between">
               <div className='flex-col'>
-              <h3 className="text-lg font-semibold mb-1">{handleOwner || "johnDoe"}</h3>
+              <h3 className="text-lg font-semibold mb-1">{item.title || "johnDoe"}</h3>
               <p className="text-gray-500 text-sm mb-1">{item?.postLocation || "NEW YORK,USA"}</p>
               <p className="text-gray-400 text-xs">{item.updatedAt.slice(0,10) || item.createdAt.slice(0,10) || "10-10-1999"}</p>
               </div>

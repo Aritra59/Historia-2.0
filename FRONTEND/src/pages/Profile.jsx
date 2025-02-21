@@ -18,7 +18,9 @@ function Profile() {
     // Fetch user data
     async function updateData() {
       try {
-        const response = await axios.get("/users/getUserProfile");
+        const response = await axios.get("/users/getUserProfile",{
+          withCredentials:true
+        });
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -32,7 +34,9 @@ function Profile() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("posts/getUserPosts");
+        const response = await axios.get("posts/getUserPosts",{
+          withCredentials:true
+        });
         if (response.status !== 200) {
           throw new Error(response);
         }
@@ -46,7 +50,9 @@ function Profile() {
 
   const logOutMethod = async () => {
     try {
-      const logoutStatus = await axios.get("users/logout");
+      const logoutStatus = await axios.get("users/logout",{
+        withCredentials:true
+      });
       if (!logoutStatus) throw new Error("Logout failure");
       dispatcher(logout());
       navigate("/");

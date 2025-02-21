@@ -60,7 +60,7 @@ function Login() {
         const response = await axios.post('/users/login',{
         password:password,
         email: email
-        });
+        },{withCredentials:true});
         console.log(response.data);
           dispatcher(login(response.data))
         
