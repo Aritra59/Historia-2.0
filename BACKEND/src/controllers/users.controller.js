@@ -76,7 +76,7 @@ const login = asyncHandler(async (req, res) => {
         { email }
     )
     if (!exists) {
-        throw new apiError(400, "user not exists.Please sign Up!")
+        return res.status(411).json(new apiResponse(411,{},"invalid password"))
     }
 
     const isPassword = await exists.comparePassword(password)
