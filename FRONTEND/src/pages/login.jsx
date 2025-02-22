@@ -60,19 +60,18 @@ function Login() {
         const response = await axios.post('https://historia-2-0.onrender.com/users/login',{
         password:password,
         email: email
-        },
-        {withCredentials:true}
-      );
-        console.log(response.data);
+        },{withCredentials:true});
+        console.log(response);
           dispatcher(login(response.data))
         
-        setSuccess(true)
+          setSuccess(true)
+          setError(false)
+          navigate("/")
     }catch (error) {
-        setError("some error occured")
+        setError(prev=>!prev)
         console.error(error);
       }
 
-      navigate("/")
 }
 
   return (
@@ -96,14 +95,16 @@ function Login() {
       <p className="italic text-sm sm:text-base md:text-lg text-gray-300 text-center mb-8">
         {"Preserving the echoes of time."}
       </p>
-      <form onSubmit={handleLogin} className="w-full max-w-xs sm:max-w-sm">
+      <form onSubmit={(e)=>{
+       
+        handleLogin(e)}} className="w-full max-w-xs sm:max-w-sm">
         <div className="mb-6">
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Username"
+            placeholder="Email"
             className="w-full p-3 bg-gray-700 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm sm:text-base"
           />
         </div>
@@ -137,6 +138,7 @@ function Login() {
             Sign Up
           </Link>
         </p>
+          <p  className="text-red-600 font-bold text-xl " hidden={!error}>Invalid Password or Email</p>
       </form>
     </div>
   
@@ -162,6 +164,7 @@ function Login() {
        { "Those who cannot remember the past are condemned to repeat it."}
       </blockquote>
     </div>
+    
   </div>
   );
 }

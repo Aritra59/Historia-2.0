@@ -3,7 +3,7 @@ import {
     createPost, deletePost, getAllPostData,
     updatePost, updatePostImage, getPostWithLocationName,
     getUserPosts, getPostWithLimitedData,
-    getPostBasedOnTitle, getPostsBasedOnId, getALike, fetchLikes
+    getPostBasedOnTitle, getPostsBasedOnId, getALike, fetchLikes,searchPosts
 } from "../controllers/post.controller.js";
 import { upload } from "../middlewares/multer.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js"
@@ -24,6 +24,7 @@ postRouter.route("/getPostOnTitle/:location").get(verifyJWT, getPostBasedOnTitle
 postRouter.route("/getPostById/:id").get(getPostsBasedOnId)
 postRouter.route("/likeSome/:postId").get(verifyJWT, getALike)
 postRouter.route("/fetchLikes").get(verifyJWT, fetchLikes)
+postRouter.route("/search").get(searchPosts)
 
 
 export { postRouter }
