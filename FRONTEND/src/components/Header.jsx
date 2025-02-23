@@ -46,16 +46,19 @@ const Header = () => {
               detailed stories
             </p>
             <div className="relative mt-4 max-w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+            <form onSubmit={e=>{navigate(`/searchResults/${data}`)}}>
               <input
                 className="p-3 pl-4 w-full rounded-lg bg-opacity-75 bg-black/50 border placeholder-gray-300 text-sm md:text-base text-white outline-none focus:ring-2 focus:ring-yellow-500 transition-all ease-in-out duration-200"
                 type="text"
                 placeholder="Type a location or a historical name..."
+                onChange={(e)=>setData(e.target.value)} value={data}
               />
-              <img
-                src={assets.search_icon}
+             <button  type="submit" >
+              <img    src={assets.search_icon}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 md:h-5 md:w-5 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110"
-                alt="Search Icon"
-              />
+                alt="Search Icon"/>
+              </button> 
+              </form>
             </div>
           </div>
         </div>
