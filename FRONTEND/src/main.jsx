@@ -10,7 +10,7 @@ import {Stories,Event,
   Monuments,
   AddPost,
   ViewPage,
-  EditProfile
+  EditProfile,SearchResults
 
 } from "./pages/index.js"
   import { Provider } from 'react-redux'
@@ -34,7 +34,7 @@ const route= createBrowserRouter(
         <Route path="/monuments" element={<Monuments/>}/>
         <Route path="/addPost" element={<AddPost/>}/>
         <Route path="/viewPage/:title" element={<ViewPage/>}/>
-        {/* <Route path="/editProfile/:title" element={<ViewPage/>}/> */}
+        <Route path="/searchResults/:title" element={<SearchResults/>}/>
         </Route>
   )
 )
