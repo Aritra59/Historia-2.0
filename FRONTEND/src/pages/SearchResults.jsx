@@ -56,7 +56,7 @@ const SearchResults = () => {
       {/* Header */}
       <header className="bg-customBg shadow">
         <div className="container mx-auto px-6 sm:px-12 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold">Search results for "{url.parameter}"</div>
+          <div className="text-2xl font-bold">{fetchedData.length<1?<p>No results found</p>:<p> Search results for {title}</p>}</div>
         </div>
       </header>
 
@@ -65,7 +65,6 @@ const SearchResults = () => {
         <div className="relative w-full">
         </div>
         <button className="text-gray-700 self-end sm:self-auto text-xl px-6 py-3 rounded w-[8rem]">
-          Sort By
         </button>
       </div>
 

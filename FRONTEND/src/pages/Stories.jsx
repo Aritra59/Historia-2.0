@@ -46,22 +46,16 @@ const Catalog = () => {
       {/* Header */}
       <header className="bg-customBg shadow">
         <div className="container mx-auto px-6 sm:px-12 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold">North 24 Parganas</div>
+          <div className="text-2xl font-bold">Results for Gallery</div>
         </div>
       </header>
 
       {/* Search Bar and Sort Button */}
       <div className="container mx-auto px-6 sm:px-8 py-6 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4">
         <div className="relative w-full">
-          <input
-            type="text"
-            placeholder="Search By Name"
-            className="w-full px-4 py-2 border-b border-gray-400 focus:outline-none focus:ring-0 text-lg bg-transparent"
-          />
+       
         </div>
-        <button className="text-gray-700 self-end sm:self-auto text-xl px-6 py-3 rounded w-[8rem]">
-          Sort By
-        </button>
+      
       </div>
 
       {/* Cards Section */}
