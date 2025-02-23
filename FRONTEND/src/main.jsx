@@ -35,7 +35,7 @@ const route= createBrowserRouter(
         <Route path="/addPost" element={<AddPost/>}/>
         <Route path="/viewPage/:title" element={<ViewPage/>}/>
         <Route path="/searchResults/:title" element={<SearchResults/>}/>
-        </Route>
+        </Route>  
   )
 )
 

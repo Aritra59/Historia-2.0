@@ -290,7 +290,8 @@ const getPostWithLimitedData = asyncHandler(async (req, res) => { //how many u w
         pipeline: [
           {
             $project: {
-              username: 1
+              username: 1,
+              avatar:1
             }
           }
         ]
