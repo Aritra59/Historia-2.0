@@ -69,14 +69,7 @@ const Gallery = () => {
   }
 
 
-  async function deletePost(e, data) {
-    try {
-      const deletedPost = await axios.get(`posts/deletePost/${data}`);
-      setDeleteState(deletedPost.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // 
   return (
     <div ref={galleryRef} className="container mx-auto px-6 py-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -93,13 +86,7 @@ const Gallery = () => {
               <div className='flex'>
                 <button onClick={()=>handleLikes(item)}>{(likeHandler.includes(item._id) || likes.includes(item._id))?"💗":"🤍"}</button>
                 
-                <button
-                 className="absolute bottom-4"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deletePost(e, item._id);
-                }}
-                >{selector?.data?.admin==true?"🚫":null}</button>
+                
               </div>
 
             </div>

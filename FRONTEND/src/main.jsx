@@ -17,6 +17,7 @@ import {Stories,Event,
   import globalStore,{persistor} from "./store/globalStore.js"
   import { PersistGate } from "redux-persist/integration/react";
 
+  import AdminDashboard from "./adminPages/AdminDashboard.jsx"
   
 const route= createBrowserRouter(
 
@@ -35,6 +36,7 @@ const route= createBrowserRouter(
         <Route path="/addPost" element={<AddPost/>}/>
         <Route path="/viewPage/:title" element={<ViewPage/>}/>
         <Route path="/searchResults/:title" element={<SearchResults/>}/>
+        <Route path="/admin/dashboard/" element={<AdminDashboard/>}/>
         </Route>  
   )
 )

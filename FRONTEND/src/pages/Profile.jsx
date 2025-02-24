@@ -105,6 +105,12 @@ function Profile() {
         >
           Logout
         </button>
+        <button
+          onClick={e=>navigate("/admin/dashboard")}
+          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+        >
+          AdminPanel
+        </button>
 
         <div className="flex mt-4 gap-6 text-lg">
           <div>
