@@ -2,11 +2,13 @@ import{ useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/loader/Loader";
+import {useSelector} from "react-redux"
 
 const Catalog = () => {
   const [animate, setAnimate] = useState(false);
   const [fetchedData, setFetchedData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const selector= useSelector(state=>state.auth.authState)
 
   // Trigger animation on mount
   useEffect(() => {
@@ -25,6 +27,7 @@ const Catalog = () => {
         console.log(allPostRes.data.data);
         setFetchedData(allPostRes.data.data);
         setLoading(false);
+        console.log(selector)
       } catch (error) {
         console.error(error);
         setLoading(false);
@@ -62,7 +65,7 @@ const Catalog = () => {
       <div className="container mx-auto px-6 sm:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-6">
         {fetchedData.map((data, index) => (
           <Link
-            to={`/viewPage/${data._id}`} // Dynamic route
+            to={selector.isUserLoggedIn?`/viewPage/${data._id}`:"/login"} // Dynamic route
             key={data._id}
             className={`relative bg-white rounded-3xl overflow-hidden shadow-md mx-auto w-full max-w-xs opacity-0 transform translate-y-10 transition-all duration-700 ease-in-out ${
               animate ? `animate-card-${index + 1}` : ""
