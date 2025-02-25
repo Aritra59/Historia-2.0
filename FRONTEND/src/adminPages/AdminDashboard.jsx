@@ -3,6 +3,8 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import {useSelector} from "react-redux"
 import Loader from '../components/loader/Loader';
+import Error404 from "../pages/Error404.jsx"
+
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -42,14 +44,24 @@ console.log(userState)
       <Loader/>
     )
   }
+
+// Error handling
+  if (userState?.data.admin === false || userState?.data.admin == null) {
+    return <Error404 />;
+  }
+  if(!users) return (
+    <Loader/>
+  )
+
   return (
     <div className="flex h-screen w-screen">
+
       {/* Sidebar */}
       <div className="w-1/5 bg-gray-100 p-4 border-r">
         <h2 className="text-xl font-bold mb-4">Setup</h2>
         <nav className="flex flex-col gap-2">
-          <NavLink to="#" className="p-2 hover:bg-red-200">Posts</NavLink>
-          <NavLink to="/admin/dashboard" className="p-2 hover:bg-red-200">Users</NavLink>
+          <NavLink to="/admin/dashboard/posts" className="p-2 hover:bg-red-200">Posts</NavLink>
+          <NavLink to="/admin/dashboard/users" className="p-2 hover:bg-red-200">Users</NavLink>
         </nav>
       </div>
 
@@ -74,6 +86,7 @@ console.log(userState)
 
         {/* Users Table */}
         <div className="border rounded-lg overflow-hidden">
+          
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-200 text-left">

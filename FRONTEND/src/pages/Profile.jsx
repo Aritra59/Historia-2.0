@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userAuth";
 
 function Profile() {
-  const [data, setData] = useState([]);
+
+  
+  const [data, setData] = useState({}); // NOTE. CHANGED HERE [] -> {}
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
@@ -95,7 +97,7 @@ function Profile() {
           />
         </div>
         <h1 className="mt-4 text-3xl font-semibold">
-          {data.username || "Aritra"} {data.admin==true?"(admin)":null}
+          {data.username || "JohnDoe"} {data.admin==true?"(admin)":null}
         </h1>
 
         <button
@@ -114,10 +116,10 @@ function Profile() {
         </button>
 
         {
-          !userState.admin?
+          data.admin==true ?
           (
             <button
-            onClick={e=>navigate("/admin/dashboard")}
+            onClick={e=>navigate("/admin/dashboard/users")}
             className=" mt-2 px-4 py-2 bg-red-500 text-white rounded-lg "
             id="targeted"
             >
@@ -127,7 +129,6 @@ function Profile() {
         }
        </div>
 
-        
       </div>
 
       <div className="mt-10 flex flex-col items-center">

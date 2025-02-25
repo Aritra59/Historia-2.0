@@ -15,7 +15,7 @@ postRouter.route("/addPost").post(verifyJWT, upload.array("postImg", 3), createP
 postRouter.route("/updatePost/:postId").post(upload.array("postImg", 3), updatePost)
 postRouter.route("/deletePost/:postId").get(verifyJWT,deletePost)
 postRouter.route("/updatePostImage/:postId").post(upload.array("postImg", 2), updatePostImage)
-postRouter.route("/allPosts/").get(getAllPostData)
+postRouter.route("/allPosts").get(verifyJWT,getAllPostData)
 postRouter.route("/locationBasedPosts/").get(getPostWithLocationName)
 postRouter.route("/getUserPosts/").get(verifyJWT, getUserPosts)
 postRouter.route("/getPosts/").get(getUserPosts)

@@ -208,6 +208,22 @@ const getAllPostData = asyncHandler(async (req, res) => {
     },
     {
       $limit: initialStart
+    },
+    {
+      $lookup:{
+      from:"users",
+      localField:"owner",
+      foreignField:"_id",
+      as:"userData",
+      pipeline:[
+        {
+          $project:{
+            email:1,
+            username:1
+          }
+        }
+      ]
+      }
     }
   ])
 
@@ -399,6 +415,8 @@ const searchPosts= asyncHandler(async(req,res)=>{
   if(!result) throw new apiError(404,"no data found from search")
   res.status(200).json(new apiResponse(200,result,"posts fetched"))
 })
+
+
 
 export {
   createPost,
