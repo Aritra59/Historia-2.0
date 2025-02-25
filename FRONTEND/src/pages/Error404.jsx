@@ -1,18 +1,41 @@
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-function Error404() {
+const Error404 = () => {
   return (
-    <div className="text-center">
-    <h1 className="mb-4 text-6xl font-semibold text-red-500">404</h1>
-    <p className="mb-4 text-lg text-gray-600">Oops! Looks like you're lost.</p>
-    <div className="animate-bounce">
-      <svg className="mx-auto h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-      </svg>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900">
+      <motion.h1 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-4xl font-bold mb-4"
+      >
+        Oops! Page Not Found
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="text-lg text-gray-600 mb-6 text-center"
+      >
+        Looks like you've wandered into lost history. Let’s get you back!
+      </motion.p>
+
+      <motion.img
+        src="\src\assets\GadharGaar.png"
+        alt="Lost History"
+        className="w-72 md:w-96 mb-6"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      />
+
+      <Link to="/" className="px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition">
+        Back to Home
+      </Link>
     </div>
-    <p className="mt-4 text-gray-600">Let's get you back <a href="/" className="text-blue-500">home</a>.</p>
-  </div>
+  );
+};
 
-  )
-}
-
-export default Error404
+export default Error404;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../components/loader/Loader.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userAuth";
 
 function Profile() {
@@ -10,6 +10,8 @@ function Profile() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
+  const userState = useSelector(state=>state.auth.authState.userData)
+
 
   const [deleteState, setDeleteState] = useState({});
   // ######################################################################1
@@ -48,6 +50,9 @@ function Profile() {
     })();
   }, [deleteState]);
 
+    
+
+
   const logOutMethod = async () => {
     try {
       const logoutStatus = await axios.get("users/logout",{
@@ -73,7 +78,7 @@ function Profile() {
 
   if (Array.isArray(data) && data.length <= 0) {
     return (
-      <div className="h-screen w-screen flex justify-center items-center">
+      <div className="h-screen w-screen flex justify-center items-center" >
         <Loader />
       </div>
     );
@@ -90,7 +95,7 @@ function Profile() {
           />
         </div>
         <h1 className="mt-4 text-3xl font-semibold">
-          {data.fullname || "Aritra"} {data.admin==true?"(admin)":null}
+          {data.username || "Aritra"} {data.admin==true?"(admin)":null}
         </h1>
 
         <button
@@ -99,33 +104,30 @@ function Profile() {
         >
           Edit profile
         </button>
+
+        <div className="flex gap-2 ">
         <button
           onClick={logOutMethod}
           className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
         >
           Logout
         </button>
-        <button
-          onClick={e=>navigate("/admin/dashboard")}
-          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-        >
-          AdminPanel
-        </button>
 
-        <div className="flex mt-4 gap-6 text-lg">
-          <div>
-            <p>Total Views</p>
-            <p>0</p>
-          </div>
-          <div>
-            <p>All-time Rank</p>
-            <p>693.6K</p>
-          </div>
-          <div>
-            <p>30-day Rank</p>
-            <p>18K</p>
-          </div>
-        </div>
+        {
+          !userState.admin?
+          (
+            <button
+            onClick={e=>navigate("/admin/dashboard")}
+            className=" mt-2 px-4 py-2 bg-red-500 text-white rounded-lg "
+            id="targeted"
+            >
+            Admin
+          </button>
+          ):null
+        }
+       </div>
+
+        
       </div>
 
       <div className="mt-10 flex flex-col items-center">

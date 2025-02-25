@@ -10,12 +10,13 @@ import {Stories,Event,
   Monuments,
   AddPost,
   ViewPage,
-  EditProfile,SearchResults
+  EditProfile,SearchResults,Error404
 
 } from "./pages/index.js"
   import { Provider } from 'react-redux'
   import globalStore,{persistor} from "./store/globalStore.js"
   import { PersistGate } from "redux-persist/integration/react";
+ 
 
   import AdminDashboard from "./adminPages/AdminDashboard.jsx"
   
@@ -23,6 +24,7 @@ const route= createBrowserRouter(
 
   createRoutesFromElements(
     <Route path='/' element={<Layout/>}>
+        <Route path="*" element={<Error404/>} />
         <Route path='' element={<Home/>} />
         <Route path='/stories' element={<Stories/>} />
         <Route path='/event' element={<Event/>} />

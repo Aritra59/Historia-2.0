@@ -74,7 +74,7 @@ const Catalog = () => {
           >
             <img
               src={data?.postImg[0]}
-              alt={data.title}
+              alt={data.title }
               className="absolute inset-0 w-full h-full object-cover rounded-3xl transition-opacity duration-500 ease-in-out hover:opacity-90"
             />
             {/* Gradient Overlay */}

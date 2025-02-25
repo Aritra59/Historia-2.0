@@ -1,97 +1,125 @@
-import  {useEffect, useRef,useState } from 'react';
-import axios from "axios"
-import { gsap } from 'gsap';
-import { useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { gsap } from "gsap";
+import { useSelector } from "react-redux";
 
 const Gallery = () => {
   const galleryRef = useRef();
-  const [response,setResponse] = useState([])
-  const [handleOwner,setHandleOwner] = useState("")
-  const [likeHandler,setLikehandler] = useState([])
-  const [likes,setLikes]= useState([])
+  const [response, setResponse] = useState([]);
+  const [handleOwner, setHandleOwner] = useState("");
+  const [likeHandler, setLikeHandler] = useState([]);
+  const [likes, setLikes] = useState([]);
   const [deleteState, setDeleteState] = useState({});
-
-
-  const selector = useSelector(state=>state.auth.authState.userData)
-
-  useEffect(() => {
-
-    gsap.fromTo(
-      galleryRef.current.children,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, stagger: 0.2, duration: 1 }
-    );
-  }, []);
-
-// ###########################################################################
-  useEffect(()=>{
-    (async()=>{
-      try {
-        const res = await axios.get("/posts/getLimitedPosts/?count=10") 
-        setResponse(res.data.data)
-        setHandleOwner(response[0]?.ownerData[0].username || "johnDoe")
-        console.log(response[0]?.ownerData)
-      } catch (error) {
-        console.error(error)
-      }
-    })()
-
-  },[deleteState])
-
-  useEffect(()=>{  
-(async()=>{
-  try {
-      const likeData= await axios.get(`/posts/fetchLikes`,{
-        withCredentials:true
-      }) 
-    console.log(likeData.data.data)
-    setLikes(likeData.data.data)
-  } catch (error) {
-    console.error(error)
-  }
-})()
-  },[response])
-
-
-  async function handleLikes(item){
   
+  const selector = useSelector((state) => state.auth.authState.userData);
+
+  // Fetch posts
+  useEffect(() => {
+    (async () => {
       try {
-        console.log(item._id)
-        const likeState = await axios.get(`posts/likeSome/${item._id}`,{
-          withCredentials:true
-        })
-        console.log(likeState.data.data)
-        setLikehandler(likeState?.data?.data)
+        const res = await axios.get("/posts/getLimitedPosts/?count=10");
+        setResponse(res.data.data || []);
+        
+        if (res.data.data.length > 0) {
+          setHandleOwner(res.data.data[0]?.ownerData?.[0]?.username || "johnDoe");
+        }
       } catch (error) {
-        console.error(error)
+        console.error("Error fetching posts:", error);
       }
+    })();
+  }, [deleteState]);
 
-  }
+  // Fetch likes
+  useEffect(() => {
+    (async () => {
+      try {
+        const likeData = await axios.get(`/posts/fetchLikes`, { withCredentials: true });
+        setLikes(likeData.data.data || []);
+      } catch (error) {
+        console.error("Error fetching likes:", error);
+      }
+    })();
+  }, [response]);
 
+  // GSAP animation after data loads
+  useEffect(() => {
+    if (galleryRef.current && response.length > 0) {
+      gsap.fromTo(
+        galleryRef.current.children,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, stagger: 0.2, duration: 1 }
+      );
+    }
+  }, [response]);
 
-  // 
+  // Handle like button
+  const handleLikes = async (item) => {
+    try {
+      const likeState = await axios.get(`posts/likeSome/${item._id}`, { withCredentials: true });
+      setLikeHandler(likeState?.data?.data || []);
+    } catch (error) {
+      console.error("Error updating likes:", error);
+    }
+  };
+
+  // Handle post deletion
+ 
+
   return (
-    <div ref={galleryRef} className="container mx-auto px-6 py-10">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {response.map((item, index) => (
-          <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src={item.postImg[0]} alt={item.title} className="w-full h-60 object-cover" />
-            <div className="p-4 flex justify-between">
-              <div className='flex-col'>
-              <h3 className="text-lg font-semibold mb-1">{item.title || "johnDoe"}</h3>
-              <p className="text-gray-500 text-sm mb-1">{item?.postLocation || "NEW YORK,USA"}</p>
-              <p className="text-gray-400 text-xs">{item.updatedAt.slice(0,10) || item.createdAt.slice(0,10) || "10-10-1999"}</p>
-              </div>
+    <div className="bg-gray-200 text-black">
+      {/* Banner Section */}
+      <div
+        className="relative w-full h-96 flex flex-col items-center justify-center text-center px-6 bg-cover bg-center"
+        style={{ backgroundImage: `url(https://img.lovepik.com/background/20211021/large/lovepik-the-background-of-chinese-wind-banner-image_500353034.jpg  )` }}
+      >
+        <div className="absolute inset-0 bg-black opacity-40"></div>
 
-              <div className='flex'>
-                <button onClick={()=>handleLikes(item)}>{(likeHandler.includes(item._id) || likes.includes(item._id))?"💗":"🤍"}</button>
-                
-                
-              </div>
+        {/* Banner Text */}
+        <div className="relative z-10 text-white max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-wide">Rediscover the Forgotten Past</h1>
+          <p className="mt-3 text-lg sm:text-xl font-light">Explore the rich history, culture, and untold stories of legendary places.</p>
+          
+          {/* CTA Button */}
+          <button className="mt-6 px-6 py-3 bg-white text-black font-semibold text-lg rounded-lg shadow-md hover:bg-gray-200 transition">
+            Start Exploring →
+          </button>
+        </div>
+      </div>
 
+      {/* Gallery Section */}
+      <div className="py-16 px-6">
+        <h2 className="text-3xl font-bold text-center mb-8 tracking-wide">Gallery</h2>
+
+        <div ref={galleryRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          {response.map((item, index) => (
+            <div
+              key={item._id}
+              className={`relative bg-white text-black rounded-lg overflow-hidden shadow-lg transform transition-all duration-500 ${
+                index % 3 === 0 ? "md:col-span-2 md:row-span-2" : "md:col-span-1"
+              }`}
+            >
+              <img src={item.postImg?.[0] || "https://via.placeholder.com/200x250"} alt={item.title || "Post Image"} className="w-full h-64 object-cover" />
+              
+              <div className="p-4 flex justify-between">
+                <div className="flex-col">
+                  <h3 className="text-lg font-semibold">{item.title || "johnDoe"}</h3>
+                  <p className="text-gray-500 text-sm">{item?.postLocation || "Location Unknown"}</p>
+                  <p className="text-gray-400 text-xs">{item.updatedAt?.slice(0, 10) || item.createdAt?.slice(0, 10) || "10-10-1999"}</p>
+                </div>
+
+                <div className="flex">
+                  {/* Like button */}
+                  <button onClick={() => handleLikes(item)}>
+                    {(likeHandler.includes(item._id) || likes.includes(item._id)) ? "💗" : "🤍"}
+                  </button>
+
+                  {/* Delete button (visible only to admins) */}
+                  
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
