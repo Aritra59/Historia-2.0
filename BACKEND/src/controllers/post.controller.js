@@ -233,24 +233,35 @@ const getAllPostData = asyncHandler(async (req, res) => {
 })
 
 const getPostWithLocationName = asyncHandler(async (req, res) => {
-  const { location } = req.query
-  if (!req.User) {
-    throw new apiError(401, "user not logged in")
+  const { postId } = req.params
+  // if (!req.User) {
+  //   throw new apiError(401, "user not logged in")
+  // }
+  if (!postId) {
+    throw new apiError(400, "postId  not provided")
   }
-  if (!location) {
-    throw new apiError(400, "location not provided")
-  }
-  const locationBasedData = await post.aggregate([
-    {
-      $match: {
-        postLocation: location
-      }
-    }
-  ])
+  const locationBasedData = await post.findById(postId)
+  if(!locationBasedData) throw new apiError(400,"post Id invalid or not found")
+
+    if(!locationBasedData.length<0)
+ { const locationDataSet = await post.find({postLocation:locationBasedData?.postLocation})
+  const filteredOneArrayX = await locationDataSet.filter((data)=>postId!=data._id)
+  console.log(filteredOneArrayX)
 
   return res.status(200).json(
-    new apiResponse(200, locationBasedData, "found")
-  )
+    new apiResponse(200, filteredOneArrayX, "found location based data")
+  )}
+  
+  else {
+    const xx =  await post.aggregate([{
+        $match:{},
+      },{
+        $limit:6
+      }])
+  
+      const filteredOneArray = xx.filter((data)=>data._id!=postId)
+      return res.status(200).json(new apiResponse(200,filteredOneArray,"fetched alternative data"))
+    }
 
 })
 
