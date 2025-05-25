@@ -11,7 +11,7 @@ const postSchema  = new mongoose.Schema({
         type:String,
         default:"this is just the example post.Please type something here"
     },
-    owner:{
+    // owner:{
         type:mongoose.Types.ObjectId,
         ref:"user"
     },
@@ -26,7 +26,7 @@ const postSchema  = new mongoose.Schema({
     postLocation:{
         type:String,
         required:true,
-        lowercase:true,
+        // lowercase:true,
         trim:true,
         
     },
