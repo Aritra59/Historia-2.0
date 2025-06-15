@@ -17,7 +17,7 @@ const Gallery = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("https://historia-2-0.onrender.com/posts/getLimitedPosts/?count=10");
+        const res = await axios.get("https://historia-2-0-1.onrender.com/posts/getLimitedPosts/?count=10");
         setResponse(res.data.data || []);
         
         if (res.data.data.length > 0) {
@@ -33,7 +33,7 @@ const Gallery = () => {
   useEffect(() => {
     (async () => {
       try {
-        const likeData = await axios.get(`https://historia-2-0.onrender.com/posts/fetchLikes`, { withCredentials: true });
+        const likeData = await axios.get(`https://historia-2-0-1.onrender.com/posts/fetchLikes`, { withCredentials: true });
         setLikes(likeData.data.data || []);
       } catch (error) {
         console.error("Error fetching likes:", error);
@@ -55,7 +55,7 @@ const Gallery = () => {
   // Handle like button
   const handleLikes = async (item) => {
     try {
-      const likeState = await axios.get(`https://historia-2-0.onrender.com/posts/likeSome/${item._id}`, { withCredentials: true });
+      const likeState = await axios.get(`https://historia-2-0-1.onrender.com/posts/likeSome/${item._id}`, { withCredentials: true });
       setLikeHandler(likeState?.data?.data || []);
     } catch (error) {
       console.error("Error updating likes:", error);

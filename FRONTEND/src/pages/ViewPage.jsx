@@ -16,7 +16,7 @@ const ViewPage = () => {
 
     async function sendComments() {
         try {
-            await axios.post(`https://historia-2-0.onrender.com/comments/addComment`, {
+            await axios.post(`https://historia-2-0-1.onrender.com/comments/addComment`, {
                 postId: title,
                 content: formInput
             }, {
@@ -38,7 +38,7 @@ const ViewPage = () => {
     const fetchComments = async () => {
         try {
             setLoading(true);
-            const commentData = await axios.get(`https://historia-2-0.onrender.com/posts/allComments/${title}`, {
+            const commentData = await axios.get(`https://historia-2-0-1.onrender.com/posts/allComments/${title}`, {
                 withCredentials: true
             });
             setComments(commentData.data?.data);
@@ -52,7 +52,7 @@ const ViewPage = () => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await axios.get(`https://historia-2-0.onrender.com/posts/getPostById/${title}`, {
+                const response = await axios.get(`https://historia-2-0-1.onrender.com/posts/getPostById/${title}`, {
                     withCredentials: true
                 });
                 setData(response.data.data);
@@ -65,7 +65,7 @@ const ViewPage = () => {
     }, [title]);
 
     useEffect(() => {
-        axios.get(`https://historia-2-0.onrender.com/posts/locationBasedPosts/${title}`)
+        axios.get(`https://historia-2-0-1.onrender.com/posts/locationBasedPosts/${title}`)
             .then((response) => setPosts(response.data))
             .catch((error) => console.error("Error fetching posts:", error));
     }, [title]);
