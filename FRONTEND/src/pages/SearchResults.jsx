@@ -21,7 +21,7 @@ const SearchResults = () => {
     (async () => {
       try {
         setLoading(true);
-        const allPostRes = await axios.get(`/posts/searchPost/?parameter=${title}`,{
+        const allPostRes = await axios.get(`https://historia-2-0.onrender.com/posts/searchPost/?parameter=${title}`,{
             headers:{
                 "Content-Type":"application/json"
             }

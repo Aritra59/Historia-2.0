@@ -7,9 +7,10 @@ export default defineConfig({
   server:{
 
     proxy:{
-      "/users":"http://localhost:8000/",
-      "/posts":"http://localhost:8000/",
-      "/events":"http://localhost:8000/",
+      "/users":"https://historia-2-0.onrender.com",
+      "/posts":"https://historia-2-0.onrender.com",
+      "/events":"https://historia-2-0.onrender.com",
+      "/comments":"https://historia-2-0.onrender.com",
     }
   }
 })

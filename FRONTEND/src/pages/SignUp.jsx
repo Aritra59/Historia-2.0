@@ -64,14 +64,14 @@ function SignUp() {
       formData.append("avatar", profilePic);
 
 // return (<Loader/>)
-      const response = await axios.post("/users/signUp", formData,{
+      const response = await axios.post("https://historia-2-0.onrender.com/users/signUp", formData,{
         headers:{"Content-Type":"multipart/form-data"}
       });
       
       console.log(response.data.data);
       dispatcher(signUp(response.data))
 
-     await axios.get(`users/sendCookies/${response.data?.data?._id}`,
+     await axios.get(`https://historia-2-0.onrender.com/users/sendCookies/${response.data?.data?._id}`,
       {withCredentials:true}
      ) 
      navigate("/")

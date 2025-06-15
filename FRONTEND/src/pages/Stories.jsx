@@ -25,7 +25,7 @@ const Catalog = () => {
     (async () => {
       try {
         setLoading(true);
-        const allPostRes = await axios.get("posts/getLimitedPosts/?count=10");
+        const allPostRes = await axios.get("https://historia-2-0.onrender.com/posts/getLimitedPosts/?count=10");
         if (!allPostRes.data.data) throw new Error("Stories fetching error");
         setFetchedData(allPostRes.data.data);
         setFeaturedStories(allPostRes.data.data); // All posts can be featured
