@@ -7,10 +7,10 @@ export default defineConfig({
   server:{
 
     proxy:{
-      "/users":"https://historia-2-0.onrender.com",
-      "/posts":"https://historia-2-0.onrender.com",
-      "/events":"https://historia-2-0.onrender.com",
-      "/comments":"https://historia-2-0.onrender.com",
+      "/users":"https://historia-2-0-1.onrender.com",
+      "/posts":"https://historia-2-0-1.onrender.com",
+      "/events":"https://historia-2-0-1.onrender.com",
+      "/comments":"https://historia-2-0-1.onrender.com",
     }
   }
 })
