@@ -33,6 +33,10 @@ const postSchema  = new mongoose.Schema({
         type:String,
         default:"you can try to fin this on G-MAPS "
     },
+    comments:{
+        type:[mongoose.Types.ObjectId],
+        ref:"comments"
+    }
     
 },{timestamps:true})
 

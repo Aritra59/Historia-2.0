@@ -5,6 +5,8 @@ import { cloudUploader, cloudDataDeleter } from "../utils/cloudinary.js";
 import { user } from "../models/user.models.js";
 import { isValidObjectId } from "mongoose";
 import { post } from "../models/post.models.js";
+import { comments } from "../models/comments.models.js";
+import mongoose from "mongoose";
 
 
 const createPost = asyncHandler(async (req, res) => {
@@ -427,7 +429,46 @@ const searchPosts= asyncHandler(async(req,res)=>{
   res.status(200).json(new apiResponse(200,result,"posts fetched"))
 })
 
+const fetchAllComments = asyncHandler(async (req,res)=>{
+  const {postId} = req.params
+  console.log(postId)
+  if(!postId && !isValidObjectId(postId)) throw new apiError(400,"no postID")
 
+  const postSelected = await post.findById(postId)
+  if(!postSelected) throw new apiError(400,"post not found")
+ 
+if( postSelected?.comments?.length==0 ){
+  return res.status(200).json(new apiResponse(200,{},"no comments found"))
+}  
+const allComments = await comments.aggregate([
+  {
+    $match: {postId: new mongoose.Types.ObjectId(postId)}
+  },
+  {
+    $lookup:{
+      from:"users",
+      localField:"userId",
+      foreignField:"_id",
+      as:"userData",
+      pipeline:[
+  //         {
+  //   $project:{
+
+  //     _id:1,
+  //   avatar:1,
+
+  //   }
+  // }
+      ]
+    },
+  },
+  
+ 
+])
+console.log(allComments)
+return res.status(200).json(new apiResponse(200,allComments,"all comments fetched"))
+  
+})
 
 export {
   createPost,
@@ -443,5 +484,6 @@ export {
   getPostsBasedOnId,
   getALike,
   fetchLikes,
-  searchPosts
+  searchPosts,
+  fetchAllComments
 }

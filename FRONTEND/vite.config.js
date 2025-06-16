@@ -10,6 +10,7 @@ export default defineConfig({
       "/users":"http://localhost:8000/",
       "/posts":"http://localhost:8000/",
       "/events":"http://localhost:8000/",
+      "/comments":"http://localhost:8000/",
     }
   }
 })

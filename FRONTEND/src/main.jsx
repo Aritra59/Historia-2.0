@@ -20,6 +20,7 @@ import {Stories,Event,
 
   import AdminDashboard from "./adminPages/AdminDashboard.jsx"
   import AdminPostControl from './adminPages/AdminPostControl.jsx';
+  import AdminEventsControl from './adminPages/AdminEventsControl.jsx';
   
 const route= createBrowserRouter(
 
@@ -41,6 +42,7 @@ const route= createBrowserRouter(
         <Route path="/searchResults/:title" element={<SearchResults/>}/>
         <Route path="/admin/dashboard/users" element={<AdminDashboard/>}/>
         <Route path="/admin/dashboard/posts" element={<AdminPostControl/>}/>
+        <Route path="/admin/dashboard/events" element={<AdminEventsControl/>}/>
         </Route>  
   )
 )
