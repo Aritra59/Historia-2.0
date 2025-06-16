@@ -57,7 +57,7 @@ console.log(posts)
                         <img src={data.postImg?.[2]} alt="Story Image 2" className="w-full h-full object-cover rounded-lg shadow-lg" />
                     </div>
                     <div className="mt-8 bg-white p-6 shadow-lg rounded-lg">
-                        <p className="text-lg text-gray-700 leading-relaxed">{data.content || "Story content here..."}</p>
+                        <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">{data.content || "Story content here..."}</p>
                     </div>
                 </div>
             </div>
