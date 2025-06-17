@@ -94,11 +94,12 @@ const login = asyncHandler(async (req, res) => {
     const Options = {
         httpOnly: true,
         secure: true,
-        sameSite:"None"
+        sameSite:"None",
+        maxAge: 900000
     }
     return res.status(200)
-        .cookie("accessToken", accessToken, { ...Options, maxAge: process.env.ACCESS_TOKEN_EXPIRY_S })
-        .cookie("refreshToken", refreshToken, { ...Options, maxAge: process.env.REFRESH_TOKEN_EXPIRY_S })
+        .cookie("accessToken", accessToken, Options)
+        .cookie("refreshToken", refreshToken, Options)
         .json(new apiResponse(200, currentUserData, "login success!!"))
 
 })
@@ -118,7 +119,8 @@ const logout = asyncHandler(async (req, res) => {
     const Options = {
         httpOnly: true,
         secure: true,
-        sameSite:"None"
+        sameSite:"None",
+        maxAge: 900000
     }
     return res.clearCookie("accessToken", Options)
         .clearCookie("refreshToken", Options).json(
@@ -163,8 +165,7 @@ const sendCookies = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(validity._id)
     const Options = {
         httpOnly: true,
-        secure: true,
-        sameSite:"None"
+        secure: true
     }
     return res.status(200).cookie("accessToken", accessToken, { ...Options, maxAge: process.env.ACCESS_TOKEN_EXPIRY_S })
         .cookie("refreshToken", refreshToken, { ...Options, maxAge: process.env.REFRESH_TOKEN_EXPIRY_S }).json(new apiResponse(200, "cookies fetched successfully"))
@@ -174,7 +175,6 @@ const clearCookies = asyncHandler(async (req, res) => {
     const Options = {
         httpOnly: true,
         secure: true,
-        sameSite:"None"
 
     }
     return res.status(200).clearCookie("accessToken", Options).clearCookie("refreshToken", Options).json(new apiResponse(200, "cookies removed successfully"))

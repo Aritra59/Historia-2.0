@@ -18,15 +18,17 @@ const addComments = asyncHandler(async(req,res)=>{
         userId: currentUser,
             content
         })
+
+       
         if(!commentRes) throw new apiError(400,"comment object creation unsuccessful!")
 
         const postIdUpdate = await post.findById(postId)
-        
-        postIdUpdate.comments.push(commentRes._id)
+        console.log(postIdUpdate)
+        postIdUpdate?.comments.push(commentRes._id)
         await postIdUpdate.save({validateBeforeSave:false})
 
         const postIdUpdateNew  = await post.findById(postId)
-        return res.status(200).json(new apiResponse(200,postIdUpdate,"post and comments created successfully"))
+        return res.status(200).json(new apiResponse(200,postIdUpdateNew,"post and comments created successfully"))
  
     
 })

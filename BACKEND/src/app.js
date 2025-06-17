@@ -13,7 +13,7 @@ import cors from "cors"
         limit:"16kb"
     }))
     app.use(cookieParser())
-
+    
      app.use(cors({
         origin:["https://teamhistoria.netlify.app"],
         allowedHeaders: ['Content-Type', 'Authorization'],

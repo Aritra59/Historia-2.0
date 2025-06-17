@@ -10,7 +10,7 @@ const eventsRouter= Router()
 eventsRouter.route("/createEvent").post(verifyJWT,upload.single("eventImage"),createEvent)
 eventsRouter.route("/fetchEvent/:eventId").get(fetchEventWithId)
 eventsRouter.route("/fetchAllEvent/").get(fetchAllEvents)
-eventsRouter.route("/deleteEventWithId/").delete(fetchAllEvents)
+eventsRouter.route("/deleteEventWithId/:eventId").delete(fetchAllEvents)
 
 
 export {eventsRouter }

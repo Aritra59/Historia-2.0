@@ -437,7 +437,7 @@ const fetchAllComments = asyncHandler(async (req,res)=>{
   const postSelected = await post.findById(postId)
   if(!postSelected) throw new apiError(400,"post not found")
  
-if( postSelected?.comments.length==0 ){
+if( postSelected?.comments?.length==0 ){
   return res.status(200).json(new apiResponse(200,{},"no comments found"))
 }  
 const allComments = await comments.aggregate([
