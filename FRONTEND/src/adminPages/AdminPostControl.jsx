@@ -13,7 +13,7 @@ function AdminPostControl() {
   useEffect(() => {
     (async () => {
       try {
-        const AllPosts = await axios.get('/posts/allPosts/?pageNo=1',{
+        const AllPosts = await axios.get('https://historia-2-0-1.onrender.com/posts/allPosts/?pageNo=1',{
           withCredentials:true
         });
         setUsers(AllPosts.data.data);
@@ -26,7 +26,7 @@ function AdminPostControl() {
   function changeRoles(id) {
     (async () => {
       try {
-        await axios.get(`/posts/deletePost/${id}`,{
+        await axios.get(`https://historia-2-0-1.onrender.com/posts/deletePost/${id}`,{
           withCredentials:true
         });
         setReload((prev) => prev + 1);

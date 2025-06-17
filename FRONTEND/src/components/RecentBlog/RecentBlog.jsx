@@ -17,7 +17,9 @@ const RecentBlog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
      try {
-       const response = await axios.get("/posts/getLimitedPosts/?count=6")
+       const response = await axios.get("https://historia-2-0-1.onrender.com/posts/getLimitedPosts/?count=6",{
+        withCredentials:true
+       })
        setResData(response.data.data)
        console.log(response.data.data)
      } catch (error) {
