@@ -24,7 +24,7 @@ const SearchResults = () => {
         const allPostRes = await axios.get(`https://historia-2-0-1.onrender.com/posts/searchPost/?parameter=${title}`,{
             headers:{
                 "Content-Type":"application/json"
-            }
+            },withCredentials:true
         });
         
         setUrl(queryString.parse(location.search))

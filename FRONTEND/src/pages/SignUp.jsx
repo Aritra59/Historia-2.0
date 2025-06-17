@@ -65,7 +65,7 @@ function SignUp() {
 
 // return (<Loader/>)
       const response = await axios.post("https://historia-2-0-1.onrender.com/users/signUp", formData,{
-        headers:{"Content-Type":"multipart/form-data"}
+        headers:{"Content-Type":"multipart/form-data"},withCredentials:true
       });
       
       console.log(response.data.data);

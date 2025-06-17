@@ -53,7 +53,7 @@ function AddPost() {
       const response = await axios.post("https://historia-2-0-1.onrender.com/posts/addPost", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-        },
+        },withCredentials:true
       });
       setLoading(false);
       navigate("/");

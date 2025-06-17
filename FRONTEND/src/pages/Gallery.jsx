@@ -19,7 +19,9 @@ const navigator = useNavigate()
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("https://historia-2-0-1.onrender.com/posts/getLimitedPosts/?count=10");
+        const res = await axios.get("https://historia-2-0-1.onrender.com/posts/getLimitedPosts/?count=10",{
+          withCredentials:true
+        });
         setResponse(res.data.data || []);
 
         if (res.data.data.length > 0) {
@@ -35,7 +37,8 @@ const navigator = useNavigate()
   useEffect(() => {
     (async () => {
       try {
-        const likeData = await axios.get(`https://historia-2-0-1.onrender.com/posts/fetchLikes`, { withCredentials: true });
+        const likeData = await axios.get(`https://historia-2-0-1.onrender.com/posts/fetchLikes`,
+          { withCredentials: true });
         setLikes(likeData.data.data || []);
       } catch (error) {
         console.error("Error fetching likes:", error);

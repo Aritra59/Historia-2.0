@@ -33,12 +33,12 @@ const ViewPage = () => {
                 {
                     postId: title,
                     content: formInput,
-                },
+                },{withCredentials:true},
                 {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                }
+                },
             );
 
             setFormInput("");
@@ -80,7 +80,9 @@ const ViewPage = () => {
 
     useEffect(() => {
         axios
-            .get(`https://historia-2-0-1.onrender.com/posts/locationBasedPosts/${title}`)
+            .get(`https://historia-2-0-1.onrender.com/posts/locationBasedPosts/${title}`,{
+                withCredentials:true
+            })
             .then((response) => setPosts(response.data))
             .catch((error) => console.error("Error fetching posts:", error));
     }, [title]);
