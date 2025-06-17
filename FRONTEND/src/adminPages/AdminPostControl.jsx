@@ -13,7 +13,9 @@ function AdminPostControl() {
   useEffect(() => {
     (async () => {
       try {
-        const AllPosts = await axios.get('/posts/allPosts/?pageNo=1');
+        const AllPosts = await axios.get('/posts/allPosts/?pageNo=1',{
+          withCredentials:true
+        });
         setUsers(AllPosts.data.data);
       } catch (error) {
         console.error("Failed to fetch posts", error);
@@ -24,7 +26,9 @@ function AdminPostControl() {
   function changeRoles(id) {
     (async () => {
       try {
-        await axios.get(`/posts/deletePost/${id}`);
+        await axios.get(`/posts/deletePost/${id}`,{
+          withCredentials:true
+        });
         setReload((prev) => prev + 1);
       } catch (err) {
         console.error("Error deleting post", err);

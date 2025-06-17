@@ -14,8 +14,12 @@ function AdminDashboard() {
   useEffect(() => {
     (async () => {
       try {
-        const UserResponse = await axios.get('/users/getAllUsers');
-        const AdminUsers = await axios.get('/users/getAllAdmins');
+        const UserResponse = await axios.get('https://historia-2-0-1.onrender.com/users/getAllUsers',{
+          withCredentials:true
+        });
+        const AdminUsers = await axios.get('https://historia-2-0-1.onrender.com/users/getAllAdmins',{
+          withCredentials:true
+        });
         setUsers(filter === "Active Users" ? UserResponse.data.data : AdminUsers.data.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -25,7 +29,7 @@ function AdminDashboard() {
 
   async function changeRoles(id) {
     try {
-      const response = await axios.delete(`/users/deleteUser/${id}`);
+      const response = await axios.delete(`https://historia-2-0-1.onrender.com/users/deleteUser/${id}`,{withCredentials:true});
       if (response.data.data?.result === "ok") {
         setReload(prev => prev + 1);
       }
@@ -36,7 +40,7 @@ function AdminDashboard() {
 
   async function TogglePermission(id) {
     try {
-      const response = await axios.get(`/users/toggleAdmin/${id}`);
+      const response = await axios.get(`https://historia-2-0-1.onrender.com/users/toggleAdmin/${id}`,{withCredentials:true});
       if (response.data.data?.result === "ok") {
         setReload(prev => prev + 1);
       }

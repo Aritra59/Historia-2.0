@@ -24,7 +24,9 @@ function AdminEventsControl() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('/events/fetchAllEvent');
+        const res = await axios.get('https://historia-2-0-1.onrender.com/events/fetchAllEvent',{
+          withCredentials:true
+        });
         setEvents(res.data.data || []);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -34,7 +36,9 @@ function AdminEventsControl() {
 
   const deleteEvent = async (id) => {
     try {
-      await axios.delete(`/events/deleteEventWithId/${id}`);
+      await axios.delete(`https://historia-2-0-1.onrender.com/events/deleteEventWithId/${id}`,{
+        withCredentials:true
+      });
       setReload((prev) => prev + 1);
     } catch (error) {
       console.error("Error deleting event:", error);
@@ -57,9 +61,9 @@ function AdminEventsControl() {
         form.append(key, formData[key]);
       }
 
-      await axios.post('/events/createEvent', form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      await axios.post('https://historia-2-0-1.onrender.com/events/createEvent', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },withCredentials:true
+      },);
 
       setOpenForm(false);
       setReload((prev) => prev + 1);
