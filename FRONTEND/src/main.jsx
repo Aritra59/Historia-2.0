@@ -36,7 +36,7 @@ const route= createBrowserRouter(
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/profile/edit/" element={<EditProfile/>}/>
 
-        <Route path="/monuments" element={<Monuments/>}/>
+        {/* <Route path="/monuments" element={<Monuments/>}/> */}
         <Route path="/addPost" element={<AddPost/>}/>
         <Route path="/viewPage/:title" element={<ViewPage/>}/>
         <Route path="/searchResults/:title" element={<SearchResults/>}/>

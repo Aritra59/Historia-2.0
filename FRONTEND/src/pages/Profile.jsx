@@ -6,24 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userAuth";
 
 function Profile() {
-
-  
-  const [data, setData] = useState({}); // NOTE. CHANGED HERE [] -> {}
+  const [data, setData] = useState({});
   const [posts, setPosts] = useState([]);
+  const [deleteState, setDeleteState] = useState({});
+  const [showButton, setShowButton] = useState(true);
+
   const navigate = useNavigate();
   const dispatcher = useDispatch();
-  const userState = useSelector(state=>state.auth.authState.userData)
+  const userState = useSelector((state) => state.auth.authState.userData);
 
-
-  const [deleteState, setDeleteState] = useState({});
-  // ######################################################################1
-
+  // Fetch user profile data
   useEffect(() => {
-    // Fetch user data
     async function updateData() {
       try {
-        const response = await axios.get("/users/getUserProfile",{
-          withCredentials:true
+        const response = await axios.get("/users/getUserProfile", {
+          withCredentials: true,
         });
         setData(response.data.data);
       } catch (error) {
@@ -33,18 +30,14 @@ function Profile() {
     updateData();
   }, []);
 
-  // #######################################################################2
-  // Get user posts
+  // Fetch user posts
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("posts/getUserPosts",{
-          withCredentials:true
+        const response = await axios.get("posts/getUserPosts", {
+          withCredentials: true,
         });
-        if (response.status !== 200) {
-          throw new Error(response);
-        }
-        console.log(response.data.data);
+        if (response.status !== 200) throw new Error(response);
         setPosts(response.data.data);
       } catch (error) {
         console.error(error);
@@ -52,13 +45,23 @@ function Profile() {
     })();
   }, [deleteState]);
 
-    
+  // Scroll listener for showing/hiding button
+  useEffect(() => {
+    let lastScrollTop = 0;
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowButton(scrollTop < lastScrollTop || scrollTop < 100);
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const logOutMethod = async () => {
     try {
-      const logoutStatus = await axios.get("users/logout",{
-        withCredentials:true
+      const logoutStatus = await axios.get("users/logout", {
+        withCredentials: true,
       });
       if (!logoutStatus) throw new Error("Logout failure");
       dispatcher(logout());
@@ -67,11 +70,10 @@ function Profile() {
       console.error(error);
     }
   };
-  console.log(data);
 
-  async function deletePost(e, data) {
+  async function deletePost(e, postId) {
     try {
-      const deletedPost = await axios.get(`posts/deletePost/${data}`);
+      const deletedPost = await axios.get(`posts/deletePost/${postId}`);
       setDeleteState(deletedPost.data.data);
     } catch (error) {
       console.error(error);
@@ -80,7 +82,7 @@ function Profile() {
 
   if (Array.isArray(data) && data.length <= 0) {
     return (
-      <div className="h-screen w-screen flex justify-center items-center" >
+      <div className="h-screen w-screen flex justify-center items-center">
         <Loader />
       </div>
     );
@@ -97,7 +99,7 @@ function Profile() {
           />
         </div>
         <h1 className="mt-4 text-3xl font-semibold">
-          {data.username || "JohnDoe"} {data.admin==true?"(admin)":null}
+          {data.username || "JohnDoe"} {data.admin === true ? "(admin)" : null}
         </h1>
 
         <button
@@ -107,40 +109,36 @@ function Profile() {
           Edit profile
         </button>
 
-        <div className="flex gap-2 ">
-        <button
-          onClick={logOutMethod}
-          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-        >
-          Logout
-        </button>
-
-        {
-          data.admin==true ?
-          (
-            <button
-            onClick={e=>navigate("/admin/dashboard/users")}
-            className=" mt-2 px-4 py-2 bg-red-500 text-white rounded-lg "
-            id="targeted"
-            >
-            Admin
+        <div className="flex gap-2">
+          <button
+            onClick={logOutMethod}
+            className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+          >
+            Logout
           </button>
-          ):null
-        }
-       </div>
 
+          {data.admin === true && (
+            <button
+              onClick={() => navigate("/admin/dashboard/users")}
+              className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
+            >
+              Admin
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="mt-10 flex flex-col items-center">
         <div className="flex gap-6 mb-6">
+          <button className="px-4 py-2 text-gray-500 ">⭐</button>
           <button className="px-4 py-2 bg-black text-white rounded-full">
-            Gallery {posts.length}
+            Gallery {`(${posts.length})`}
           </button>
-          <button className="px-4 py-2 text-gray-500">Collections</button>
-          <button className="px-4 py-2 text-gray-500">Statistics</button>
-          {/* <button className="px-4 py-2 text-gray-500">Followers 0</button> */}
+          <button className="px-4 py-2 text-gray-500">⭐</button>
         </div>
+
         <p className="my-10 font-mono text-2xl">YOUR CONTRIBUTIONS</p>
+
         {posts && posts.length < 1 ? (
           <div className="mt-10 p-6 bg-white shadow-lg rounded-lg w-full max-w-lg text-center">
             <p className="text-xl font-semibold mb-2">
@@ -158,38 +156,60 @@ function Profile() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 shadow-slate-500	 ">
-          {posts?.map((data) => (
-            <div
-              key={data._id}
-              className="relative flex justify-center items-center bg-white shadow-lg rounded-lg overflow-hidden"
-            >
-              <Link to={`/viewPage/${data._id}`} className="block w-full h-full">
-                <img
-                  src={data.postImg[0]}
-                  alt="Post"
-                  className="w-full h-64 object-cover border-4 shadow-xl shadow-[#3E5879] border-[#3E5879] rounded-lg"
-                />
-              </Link>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deletePost(e, data._id);
-                }}
-                className="absolute bottom-2 right-2  text-white p-2 rounded-full"
-                title="Delete Post"
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {posts.map((data) => (
+              <div
+                key={data._id}
+                className="relative flex justify-center items-center bg-white shadow-lg rounded-lg overflow-hidden"
               >
-                🗑️
-              </button>
-            </div>
-          ))}
-        </div>
+                <Link
+                  to={`/viewPage/${data._id}`}
+                  className="block w-full h-full"
+                >
+                  <img
+                    src={data.postImg[0]}
+                    alt="Post"
+                    className="w-full h-64 object-cover border-4 shadow-xl shadow-[#3E5879] border-[#3E5879] rounded-lg"
+                  />
+                </Link>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deletePost(e, data._id);
+                  }}
+                  className="absolute bottom-2 right-2 text-white p-2 rounded-full"
+                  title="Delete Post"
+                >
+                  ❌
+                </button>
+              </div>
+            ))}
+          </div>
         )}
 
-        <Link to={"/addPost"}
-        className="text-[4rem] text-red-500 
-        shadow-black	
-        absolute bottom-3 right-1" title="addPost">&#43;</Link>
+        {/* Scroll-responsive Add Post Button */}
+        <Link
+          to="/addPost"
+          title="Add Post"
+          className={`fixed bottom-5 right-5 z-50 group cursor-pointer transition-all duration-300 ${
+            showButton ? "opacity-100 scale-100" : "opacity-0 scale-90"
+          }`}
+        >
+          <svg
+            className="stroke-yellow-500 fill-none group-hover:fill-yellow-600 group-active:stroke-white group-active:fill-white group-active:duration-0 duration-300"
+            viewBox="0 0 24 24"
+            height="50px"
+            width="50px"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeWidth="1.5"
+              d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+            />
+            <path strokeWidth="1.5" d="M8 12H16" />
+            <path strokeWidth="1.5" d="M12 16V8" />
+          </svg>
+        </Link>
       </div>
     </div>
   );

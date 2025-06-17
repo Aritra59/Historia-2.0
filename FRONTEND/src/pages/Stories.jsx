@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/loader/Loader";
 import { useSelector } from "react-redux";
 import { Carousel } from "react-responsive-carousel"; // For featured stories carousel
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel styles
 import H2 from "../assets/H2.jpg";
+import { assets } from "../assets/assets";
+
 
 const Catalog = () => {
   const [fetchedData, setFetchedData] = useState([]);
@@ -19,7 +21,9 @@ const Catalog = () => {
   });
   const [isDarkMode, setIsDarkMode] = useState(false);
   const selector = useSelector(state => state.auth.authState);
+  const [data,setData]= useState("")
 
+  const navigator = useNavigate()
   // Fetch data
   useEffect(() => {
     (async () => {
@@ -95,34 +99,7 @@ const Catalog = () => {
       </div>
 
       {/* Filters */}
-      <div className="container mx-auto px-6 sm:px-12 py-6 flex flex-wrap gap-4">
-        <select
-          name="category"
-          value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-          className={`px-4 py-2 rounded-lg ${isDarkMode ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-800"} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
-        >
-          <option value="">All Categories</option>
-          <option value="war">War</option>
-          <option value="culture">Culture</option>
-          <option value="politics">Politics</option>
-        </select>
-        {/* <input
-          type="date"
-          name="date"
-          value={filters.date}
-          onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-          className={`px-4 py-2 rounded-lg ${isDarkMode ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-800"} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
-        /> */}
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={filters.location}
-          onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-          className={`px-4 py-2 rounded-lg ${isDarkMode ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-800"} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300`}
-        />
-      </div>
+     <h1 className="text-3xl text-center font-bold">TRENDING</h1>
 
       {/* Stories Grid */}
       <div className="container mx-auto px-6 sm:px-12 py-8">

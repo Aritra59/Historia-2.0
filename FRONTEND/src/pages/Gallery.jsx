@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { gsap } from "gsap";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
 
 const Gallery = () => {
   const galleryRef = useRef();
@@ -12,8 +13,8 @@ const Gallery = () => {
   const [deleteState, setDeleteState] = useState({});
   const [selectedImage, setSelectedImage] = useState(null); // For enlarged image
 
-  const selector = useSelector((state) => state.auth.authState.userData);
-
+  // const selector = useSelector((state) => state.auth.authState.userData);
+const navigator = useNavigate()
   // Fetch posts
   useEffect(() => {
     (async () => {
@@ -81,7 +82,7 @@ const Gallery = () => {
         <div className="relative z-10 text-white max-w-3xl">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-wide">Rediscover the Forgotten Past</h1>
           <p className="mt-3 text-lg sm:text-xl font-light">Explore the rich history, culture, and untold stories of legendary places.</p>
-          <button 
+          <button onClick={()=>navigator("/stories")}
           className="mt-6 px-6 py-3 bg-white text-black font-semibold text-lg rounded-lg shadow-md hover:bg-gray-200 transition">
             Start Exploring →
           </button>
