@@ -131,7 +131,7 @@ const RecentBlog = () => {
             </div>
 
             {/* Blog Content */}
-            <Link to={`/blogs/${blog.id}`}>
+            <Link to={`/viewPage/${blog._id}`}>
               <img
                 src={blog.postImg[0]}
                 alt={blog.title}
