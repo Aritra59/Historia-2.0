@@ -41,7 +41,7 @@ const navigator = useNavigate()
         console.error("Error fetching likes:", error);
       }
     })();
-  }, [response]);
+  }, [response,likes]);
 
   // GSAP animation after data loads
   useEffect(() => {
