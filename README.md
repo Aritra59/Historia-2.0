@@ -30,41 +30,46 @@
 - **Deployment:** Netlify
 
 ---
-
 ## 🚀 Getting Started
 
+Follow these steps to set up the project locally.
+
 ### 1. Clone the Repository
-bash
+
+``bash
 git clone https://github.com/Aritra59/Historia-2.0.git
-cd historia
+cd historian 
 
 2. Install Dependencies
 npm install
-
-3.Run the Development Server
+3. Run the Development Server
 npm run dev
 
 
 Folder Structure (Frontend)
-css
 src/
-├── assets/
-├── components/
-├── pages/
-├── routes/
-├── utils/
-└── App.jsx
+├── assets/         # Static images and assets
+├── components/     # Reusable UI components
+├── pages/          # Individual page components
+├── routes/         # Route handling (if applicable)
+├── utils/          # Helper functions or configurations
+└── App.jsx         # Root component
 
-👥 Team Members
-Aritra Maity – Planning and Frontend Designing
-Pabitra Sahoo – Research and Frontend Designing
-Md Iftejab Mondal – Planning and UI/UX Designing
-Soumoditya Pal – Research and UI/UX Designing
-Dipayan Chowdhury – Testing and Backend Designing
-Aparup Santra – Documentation and Backend Designing
 
-📄 License
-This project is developed for academic and educational purposes.
+## 👥 Team Members
+
+- **Aritra Maity** – Planning and Frontend Designing  
+- **Pabitra Sahoo** – Research and Frontend Designing  
+- **Md Iftejab Mondal** – Planning and UI/UX Designing  
+- **Soumoditya Pal** – Research and UI/UX Designing  
+- **Dipayan Chowdhury** – Testing and Backend Designing  
+- **Aparup Santra** – Documentation and Backend Designing  
+
+---
+
+## 📄 License
+
+This project is developed for academic and educational purposes.  
 © 2025 Team Historia. All rights reserved.
 
 
