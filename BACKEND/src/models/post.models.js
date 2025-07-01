@@ -5,7 +5,7 @@ const postSchema  = new mongoose.Schema({
     title:{
         type:String ,
         required:true,
-        lowercase :true,
+    
     },
     content:{
         type:String,
@@ -26,7 +26,6 @@ const postSchema  = new mongoose.Schema({
     postLocation:{
         type:String,
         required:true,
-        lowercase:true,
         trim:true,
         
     },
@@ -34,6 +33,10 @@ const postSchema  = new mongoose.Schema({
         type:String,
         default:"you can try to fin this on G-MAPS "
     },
+    comments:{
+        type:[mongoose.Types.ObjectId],
+        ref:"comments"
+    }
     
 },{timestamps:true})
 

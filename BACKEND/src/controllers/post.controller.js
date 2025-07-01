@@ -5,6 +5,8 @@ import { cloudUploader, cloudDataDeleter } from "../utils/cloudinary.js";
 import { user } from "../models/user.models.js";
 import { isValidObjectId } from "mongoose";
 import { post } from "../models/post.models.js";
+import { comments } from "../models/comments.models.js";
+import mongoose from "mongoose";
 
 
 const createPost = asyncHandler(async (req, res) => {
@@ -208,6 +210,22 @@ const getAllPostData = asyncHandler(async (req, res) => {
     },
     {
       $limit: initialStart
+    },
+    {
+      $lookup:{
+      from:"users",
+      localField:"owner",
+      foreignField:"_id",
+      as:"userData",
+      pipeline:[
+        {
+          $project:{
+            email:1,
+            username:1
+          }
+        }
+      ]
+      }
     }
   ])
 
@@ -217,24 +235,35 @@ const getAllPostData = asyncHandler(async (req, res) => {
 })
 
 const getPostWithLocationName = asyncHandler(async (req, res) => {
-  const { location } = req.query
-  if (!req.User) {
-    throw new apiError(401, "user not logged in")
+  const { postId } = req.params
+  // if (!req.User) {
+  //   throw new apiError(401, "user not logged in")
+  // }
+  if (!postId) {
+    throw new apiError(400, "postId  not provided")
   }
-  if (!location) {
-    throw new apiError(400, "location not provided")
-  }
-  const locationBasedData = await post.aggregate([
-    {
-      $match: {
-        postLocation: location
-      }
-    }
-  ])
+  const locationBasedData = await post.findById(postId)
+  if(!locationBasedData) throw new apiError(400,"post Id invalid or not found")
+
+    if(!locationBasedData.length<0)
+ { const locationDataSet = await post.find({postLocation:locationBasedData?.postLocation})
+  const filteredOneArrayX = await locationDataSet.filter((data)=>postId!=data._id)
+  console.log(filteredOneArrayX)
 
   return res.status(200).json(
-    new apiResponse(200, locationBasedData, "found")
-  )
+    new apiResponse(200, filteredOneArrayX, "found location based data")
+  )}
+  
+  else {
+    const xx =  await post.aggregate([{
+        $match:{},
+      },{
+        $limit:6
+      }])
+  
+      const filteredOneArray = xx.filter((data)=>data._id!=postId)
+      return res.status(200).json(new apiResponse(200,filteredOneArray,"fetched alternative data"))
+    }
 
 })
 
@@ -290,7 +319,8 @@ const getPostWithLimitedData = asyncHandler(async (req, res) => { //how many u w
         pipeline: [
           {
             $project: {
-              username: 1
+              username: 1,
+              avatar:1
             }
           }
         ]
@@ -387,7 +417,58 @@ if(!data) throw new apiError(400,"no data found for the user")
   return res.status(200).json(new apiResponse(200,data.likes,"likes fetched from the user"))
 })
 
+const searchPosts= asyncHandler(async(req,res)=>{
+  const {parameter} = req.query
+  const query = parameter.split("-")
+    
+    const result = await post.find(
+        { $or: query.map(q => ({ title: { $regex: q, $options: "i" } })) }
 
+    )
+  if(!result) throw new apiError(404,"no data found from search")
+  res.status(200).json(new apiResponse(200,result,"posts fetched"))
+})
+
+const fetchAllComments = asyncHandler(async (req,res)=>{
+  const {postId} = req.params
+  console.log(postId)
+  if(!postId && !isValidObjectId(postId)) throw new apiError(400,"no postID")
+
+  const postSelected = await post.findById(postId)
+  if(!postSelected) throw new apiError(400,"post not found")
+ 
+if( postSelected?.comments?.length==0 ){
+  return res.status(200).json(new apiResponse(200,{},"no comments found"))
+}  
+const allComments = await comments.aggregate([
+  {
+    $match: {postId: new mongoose.Types.ObjectId(postId)}
+  },
+  {
+    $lookup:{
+      from:"users",
+      localField:"userId",
+      foreignField:"_id",
+      as:"userData",
+      pipeline:[
+  //         {
+  //   $project:{
+
+  //     _id:1,
+  //   avatar:1,
+
+  //   }
+  // }
+      ]
+    },
+  },
+  
+ 
+])
+console.log(allComments)
+return res.status(200).json(new apiResponse(200,allComments,"all comments fetched"))
+  
+})
 
 export {
   createPost,
@@ -402,5 +483,7 @@ export {
   getPostBasedOnTitle,
   getPostsBasedOnId,
   getALike,
-  fetchLikes
+  fetchLikes,
+  searchPosts,
+  fetchAllComments
 }

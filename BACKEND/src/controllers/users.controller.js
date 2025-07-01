@@ -1,9 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from "../utils/apiError.js"
 import { apiResponse } from "../utils/apiResponse.js"
-import { cloudUploader } from "../utils/cloudinary.js";
+import { cloudUploader,cloudDataDeleter } from "../utils/cloudinary.js";
 import { user } from "../models/user.models.js";
 import { isValidObjectId } from "mongoose";
+
 
 const signUp = asyncHandler(async (req, res) => {
     const { username, password, email, userLocation } = req.body
@@ -76,7 +77,7 @@ const login = asyncHandler(async (req, res) => {
         { email }
     )
     if (!exists) {
-        throw new apiError(400, "user not exists.Please sign Up!")
+        return res.status(411).json(new apiResponse(411,{},"invalid password"))
     }
 
     const isPassword = await exists.comparePassword(password)
@@ -92,11 +93,13 @@ const login = asyncHandler(async (req, res) => {
 
     const Options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite:"None",
+        maxAge: 900000
     }
     return res.status(200)
-        .cookie("accessToken", accessToken, { ...Options, maxAge: process.env.ACCESS_TOKEN_EXPIRY_S })
-        .cookie("refreshToken", refreshToken, { ...Options, maxAge: process.env.REFRESH_TOKEN_EXPIRY_S })
+        .cookie("accessToken", accessToken, Options)
+        .cookie("refreshToken", refreshToken, Options)
         .json(new apiResponse(200, currentUserData, "login success!!"))
 
 })
@@ -115,7 +118,9 @@ const logout = asyncHandler(async (req, res) => {
 
     const Options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite:"None",
+        maxAge: 900000
     }
     return res.clearCookie("accessToken", Options)
         .clearCookie("refreshToken", Options).json(
@@ -229,6 +234,49 @@ const toggleUserAuthorization = asyncHandler(async(req,res)=>{
 return res.status(200).json(new apiResponse(200,updatedSettings,"admin permission toggled"))
 })
 
+
+const findAllUsers = asyncHandler(async (req,res)=>{
+    const allUsers = await user.find({
+        admin:false
+    })
+    
+    if(allUsers.length<1){
+        throw new apiError(404,"no users found ")}  
+    
+    return res.status(200).json(new apiResponse(200,allUsers,"all users fetched!"))
+    
+})
+const findAdmins = asyncHandler(async (req,res)=>{
+    const allUsers = await user.find({
+        admin:true
+    })
+    
+    if(allUsers.length<1){
+        throw new apiError(404,"no users found ")}  
+    
+    return res.status(200).json(new apiResponse(200,allUsers,"all admins fetched!"))
+    
+})
+
+const deleteUser = asyncHandler(async(req,res)=>{
+    const {userId} = req.params
+    if(!isValidObjectId(userId)) throw new apiError(400,"user id invalid ")
+
+        const userDataFetch = await user.findById(userId)
+        if(!userDataFetch) throw new apiError(400,"user not found to delete")
+
+        const deleteUserData= await cloudDataDeleter(userDataFetch.avatar)
+        if(!deleteUserData) throw new apiError(400,"deletion failure from cloudinary")
+
+            const userData = await user.findByIdAndDelete(userId)
+            if(!userData) throw new apiError(400,"user not found to delete")
+
+    return res.status(200).json(new apiResponse(200,deleteUserData,"userData deletion success!"))
+
+    
+})
+
+
 export {
     signUp
     , login,
@@ -236,6 +284,10 @@ export {
     getUserProfileData,
     isUserLoggedIn,
     sendCookies,
-    clearCookies,editUser,toggleUserAuthorization
+    clearCookies,editUser,
+    toggleUserAuthorization,
+    findAllUsers,
+    findAdmins,
+    deleteUser 
 }
 

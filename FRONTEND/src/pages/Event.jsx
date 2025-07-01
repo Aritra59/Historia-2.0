@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import EventBg from "../components/category/events/Bg-Events.png";
 import Clock from "../components/category/events/clock.png";
 import Location from "../components/category/events/location.png";
@@ -8,18 +8,31 @@ import axios from "axios";
 
 const Event = () => {
   const [data, setData] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  // Fetch events from the API
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("/events/fetchAllEvent/");
+        const response = await axios.get("https://historia-2-0-1.onrender.com/events/fetchAllEvent/",{
+          withCredentials:true
+        });
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     })();
   }, []);
+
+  const handleOpenModal = (event) => {
+    setSelectedEvent(event);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedEvent(null);
+  };
 
   return (
     <div>
@@ -46,6 +59,40 @@ const Event = () => {
           </div>
         </motion.div>
       </section>
+
+      {/* Modal */}
+      {showModal && selectedEvent && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg max-w-3xl w-full p-6 relative shadow-lg overflow-y-auto max-h-[90vh]">
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl"
+            >
+              &times;
+            </button>
+            <img
+              src={selectedEvent.eventImage}
+              alt="Event"
+              className="w-full h-64 object-cover rounded-md mb-4"
+            />
+            <h2 className="text-2xl font-bold mb-2">{selectedEvent.title}</h2>
+            <p className="text-gray-600 mb-2">
+              <strong>Date:</strong> {selectedEvent.dateOfEvent}
+            </p>
+            <p className="text-gray-600 mb-2">
+              <strong>Time:</strong> {selectedEvent.timing}
+            </p>
+            <p className="text-gray-600 mb-2">
+              <strong>Location:</strong> {selectedEvent.eventLocation}
+            </p>
+            <p className="text-gray-600 mb-2">
+              <strong>Access:</strong>{" "}
+              {selectedEvent.membership ? "Members Only" : "Everyone is Allowed"}
+            </p>
+            <p className="text-gray-800 mt-4">{selectedEvent.eventDetails}</p>
+          </div>
+        </div>
+      )}
 
       {/* Event Cards */}
       <div className="flex flex-col items-center p-6 space-y-6 w-full">
@@ -81,14 +128,17 @@ const Event = () => {
                     {event.title}
                   </h2>
                   <div className="mt-4 flex justify-center lg:justify-start">
-                    <button className="bg-black text-white px-4 py-2 md:px-6 md:py-3 text-sm md:text-lg rounded">
+                    <button
+                      onClick={() => handleOpenModal(event)}
+                      className="bg-black text-white px-4 py-2 md:px-6 md:py-3 text-sm md:text-lg rounded"
+                    >
                       Event Details
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Event Details */}
+              {/* Event Details Summary */}
               <div className="flex flex-col items-start pl-6 space-y-4 w-full lg:w-auto">
                 <div className="flex items-center space-x-4">
                   <img

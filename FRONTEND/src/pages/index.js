@@ -9,6 +9,8 @@ import Monuments from './Monuments.jsx'
 import ViewPage from './ViewPage.jsx'
 import AddPost from './AddPost.jsx';
 import EditProfile from './EditProfile.jsx'
+import SearchResults from './SearchResults.jsx'
+import Error404 from './Error404.jsx'
 
 
 
@@ -17,6 +19,10 @@ export {Home,Stories,Event,
     Gallery,
     SignUp,
     Login,
-    Profile,Monuments,
-    ViewPage,AddPost,EditProfile
+    Profile,
+    Monuments,
+    ViewPage,
+    AddPost,
+    EditProfile,
+    SearchResults,Error404
 }

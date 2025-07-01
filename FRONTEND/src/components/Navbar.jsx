@@ -20,7 +20,9 @@ const Navbar = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get('/users/isUserLoggedIn/');
+        const response = await axios.get('https://historia-2-0-1.onrender.com/users/isUserLoggedIn/',{
+          withCredentials:true
+        });
         if (response.data?.data.userAuthorized !== true) {
           console.log(response.name?.status);
           dispatcher(logout());
@@ -28,7 +30,9 @@ const Navbar = () => {
 
         else {
           try {
-            const response2 = await axios.get('/users/getUserProfile');
+            const response2 = await axios.get('https://historia-2-0-1.onrender.com/users/getUserProfile',{
+              withCredentials:true
+            });
             dispatcher(login(response2.data));
           } catch (error) {
             console.error("Error fetching user profile:", error);
