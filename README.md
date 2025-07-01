@@ -38,7 +38,7 @@ Follow these steps to set up the project locally.
 
 ``bash
 git clone https://github.com/Aritra59/Historia-2.0.git
-cd historian 
+cd historia 
 
 2. Install Dependencies
 npm install
