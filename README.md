@@ -1,77 +1,69 @@
-# 🏛️ HISTORIA – Preserving the Past, Inspiring the Future
+# Historia
 
-**Historia** is a historical awareness platform designed to bring attention to forgotten and lesser-known heritage sites across various cities in West Bengal. Our mission is to rekindle curiosity and respect for our cultural roots through storytelling, visuals, and events — all presented in a clean, modern web interface.
+Historical awareness platform for lesser-known heritage sites across West Bengal — stories, visuals, and events in a modern web interface.
 
----
+**Live demo:** [teamhistoria.netlify.app](https://teamhistoria.netlify.app/)
 
-## 🌟 Live Demo
+## Features
 
-🔗 [Visit the Live Website](https://teamhistoria.netlify.app/)
+- Explore historical places (monuments, temples, forts, museums, and more)
+- Image gallery with uploads
+- Story section for local historical narratives
+- Event section with location, time, and venue
+- Auth (signup / login) with profile editing
+- Location-based filtering and search
+- Likes and comments
+- Admin dashboards for users, posts, and events
+- Smooth motion with GSAP and Framer Motion
 
----
+## Tech Stack
 
-## 📌 Key Features
+| Layer | Tools |
+| --- | --- |
+| Frontend | React 18, Vite, Tailwind CSS, Redux Toolkit, React Router, Axios, GSAP, Framer Motion |
+| Backend | Node.js, Express, MongoDB / Mongoose, JWT, bcrypt |
+| Media | Cloudinary, Multer |
+| Deploy | Netlify |
 
-- 🏯 **Explore Historical Places** – Monuments, temples, forts, museums, and more.
-- 🖼️ **Image Gallery** – View and upload rare historical images with titles.
-- 📝 **Story Section** – Share and read structured local historical stories.
-- 📅 **Event Section** – Track historical events with location, time, and venue.
-- 🔐 **Login System** – Secure modal-based login with username and password.
-- 🌍 **Location-Based Filtering** – Find stories and events by region.
-- 💫 **Smooth Animations** – Built with GSAP for dynamic transitions.
+## Project Structure
 
----
+```text
+Historia-2.0/
+├── FRONTEND/    # React + Vite app
+└── BACKEND/     # Express API
+```
 
-## 🛠️ Tech Stack
+## Getting Started
 
-- **Frontend:** React, Tailwind CSS, GSAP
-- **Backend:** Node.js, Express 
-- **Database:** MongoDB 
-- **Deployment:** Netlify
+### Frontend
 
----
-## 🚀 Getting Started
-
-Follow these steps to set up the project locally.
-
-### 1. Clone the Repository
-
-``bash
+```bash
 git clone https://github.com/Aritra59/Historia-2.0.git
-cd historia 
-
-2. Install Dependencies
+cd Historia-2.0/FRONTEND
 npm install
-3. Run the Development Server
 npm run dev
+```
 
+### Backend
 
-Folder Structure (Frontend)
-src/
-├── assets/         # Static images and assets
-├── components/     # Reusable UI components
-├── pages/          # Individual page components
-├── routes/         # Route handling (if applicable)
-├── utils/          # Helper functions or configurations
-└── App.jsx         # Root component
+```bash
+cd Historia-2.0/BACKEND
+npm install
+# configure .env (MongoDB URI, JWT secret, Cloudinary, etc.)
+npm run dev
+```
 
+## Team
 
-## 👥 Team Members
+| Member | Role |
+| --- | --- |
+| Aritra Maity | Planning and frontend |
+| Pabitra Sahoo | Research and frontend |
+| Md Iftejab Mondal | Planning and UI/UX |
+| Soumoditya Pal | Research and UI/UX |
+| Dipayan Chowdhury | Testing and backend |
+| Aparup Santra | Documentation and backend |
 
-- **Aritra Maity** – Planning and Frontend Designing  
-- **Pabitra Sahoo** – Research and Frontend Designing  
-- **Md Iftejab Mondal** – Planning and UI/UX Designing  
-- **Soumoditya Pal** – Research and UI/UX Designing  
-- **Dipayan Chowdhury** – Testing and Backend Designing  
-- **Aparup Santra** – Documentation and Backend Designing  
+## License
 
----
-
-## 📄 License
-
-This project is developed for academic and educational purposes.  
-© 2025 Team Historia. All rights reserved.
-
-
-
-
+Developed for academic and educational purposes. © 2025 Team Historia.
